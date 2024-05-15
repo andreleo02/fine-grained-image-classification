@@ -82,7 +82,7 @@ def train_model(model: SwinTransformer, train_loader: DataLoader, optimizer, cri
         loss.backward()
         train_loss += loss.item()
         optimizer.step()
-        train_acc += calc_accuracy(labels, outputs)
+        train_acc += calc_accuracy(labels, outputs.argmax(dim = 1))
     training_loss = train_loss / len(train_loader)
     training_accuracy = train_acc / len(train_loader)
     return training_loss, training_accuracy
@@ -96,7 +96,7 @@ def validate_model(model: SwinTransformer, val_loader: DataLoader, criterion):
             outputs = model(images)
             loss = criterion(outputs, labels)
             val_loss += loss.item()
-            val_accuracy += calc_accuracy(labels, outputs)
+            val_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
     validation_loss = val_loss / len(val_loader)
     validation_accuracy = val_accuracy / len(val_loader)
     return validation_loss, validation_accuracy
