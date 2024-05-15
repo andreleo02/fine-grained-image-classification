@@ -11,6 +11,8 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import Flowers102
 from pathlib import Path
 
+from utils import train_model, validate_model, test_model, get_data
+
 def load_model() -> SwinTransformer:
     # weights = Swin_T_Weights.DEFAULT
     return swin_t(weights = 0)
@@ -32,13 +34,7 @@ def optimal_model(model: SwinTransformer,
         transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
 
-    dataset_path = "../../data/" + dataset_name
-    train_dataset = Flowers102(root = dataset_path, split = "train", transform = transform, download = True)
-    test_dataset = Flowers102(root = dataset_path, split = "test", transform = transform, download = True)
-    val_dataset = Flowers102(root = dataset_path, split = "val", transform = transform, download = True)
-
-    train_loader = DataLoader(train_dataset, batch_size = batch_size, shuffle = True)
-    val_loader = DataLoader(val_dataset, batch_size = batch_size, shuffle = False)
+    train_loader, val_loader, test_loader = get_data(dataset_name, batch_size, transform)
 
     criterion = nn.CrossEntropyLoss().to(device = device)
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
@@ -63,6 +59,15 @@ def optimal_model(model: SwinTransformer,
             "val/accuracy":val_acc
         })
 
+        # Save the model checkpoints
+        # if e % save_every_n_epochs or e == (epochs - 1):
+        #     torch.save(net.state_dict(), checkpoint_path / f'epoch-{e}.pth')
+
+        # # Update the best model so far
+        # if val_accuracy >= best_val_accuracy:
+        #     torch.save(net.state_dict(), checkpoint_path / f'best.pth')
+        #     best_val_accuracy = val_accuracy
+
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             epochs_no_improve = 0
@@ -73,43 +78,6 @@ def optimal_model(model: SwinTransformer,
                 break
 
     return model
-
-def train_model(model: SwinTransformer, train_loader: DataLoader, optimizer, criterion, device):
-    train_loss = 0
-    train_acc = 0
-    for images, labels in train_loader:
-        images, labels = images.to(device), labels.to(device)
-        model.train()
-        optimizer.zero_grad()
-        outputs = model(images).to(device)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        train_loss += loss.item()
-        optimizer.step()
-        train_acc += calc_accuracy(labels, outputs.argmax(dim = 1))
-    training_loss = train_loss / len(train_loader)
-    training_accuracy = train_acc / len(train_loader)
-    return training_loss, training_accuracy
-
-def validate_model(model: SwinTransformer, val_loader: DataLoader, criterion, device):
-    model.eval()
-    val_loss = 0
-    val_accuracy = 0
-    with torch.no_grad():
-        for images, labels in val_loader:
-            images, labels = images.to(device), labels.to(device)
-            outputs = model(images).to(device)
-            loss = criterion(outputs, labels)
-            val_loss += loss.item()
-            val_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
-    validation_loss = val_loss / len(val_loader)
-    validation_accuracy = val_accuracy / len(val_loader)
-    return validation_loss, validation_accuracy
-
-def calc_accuracy(y_true, y_pred):
-    correct = torch.eq(y_true, y_pred).sum().item()
-    acc = (correct / len(y_pred)) * 100
-    return acc
 
 if __name__ == "__main__":
 
