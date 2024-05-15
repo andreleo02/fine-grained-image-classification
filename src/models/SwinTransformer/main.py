@@ -36,7 +36,7 @@ def optimal_model(model: SwinTransformer,
     val_dataset = Flowers102(root = dataset_path, split = "val", transform = transform, download = True)
 
     train_loader = DataLoader(train_dataset, batch_size = batch_size, shuffle = True)
-    val_loader = DataLoader(val_dataset)
+    val_loader = DataLoader(val_dataset, batch_size = batch_size, shuffle = False)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
@@ -143,7 +143,7 @@ if __name__ == "__main__":
 
     checkpoint_path = Path("./checkpoint")
     checkpoint_path = checkpoint_path / run_name
-    checkpoint_path.mkdir(exist_ok=True, parents=True)
+    checkpoint_path.mkdir(exist_ok = True, parents = True)
 
     model = load_model()
     model = optimal_model(model = model,
