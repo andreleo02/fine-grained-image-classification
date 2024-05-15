@@ -21,7 +21,6 @@ def optimal_model(model: SwinTransformer,
                  num_classes: int = 0,
                  batch_size: int = 32,
                  patience: int = 3)-> SwinTransformer:
-    num_classes = 200
     model.head = nn.Linear(model.head.in_features, num_classes)
 
     transform = transforms.Compose([
