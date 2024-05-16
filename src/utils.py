@@ -22,7 +22,6 @@ def optimal_model(model,
                   num_classes: int,
                   patience: int,
                   device: DeviceObjType,
-                  net: str,
                   checkpoint_path):
     model.head = nn.Linear(model.head.in_features, num_classes)
 
@@ -53,11 +52,11 @@ def optimal_model(model,
             "val/accuracy":val_acc
         })
 
-        torch.save(net.state_dict(), checkpoint_path / f'epoch-{epoch}.pth')
+        torch.save(model.state_dict(), checkpoint_path / f'epoch-{epoch}.pth')
 
         if val_loss < best_val_loss:
             best_val_loss = val_loss
-            torch.save(net.state_dict(), checkpoint_path / f'best.pth')
+            torch.save(model.state_dict(), checkpoint_path / f'best.pth')
             epochs_no_improve = 0
         else:
             epochs_no_improve += 1
@@ -165,7 +164,6 @@ def main(args, model_function, dataset_function, dataset_name, num_classes):
                           num_classes = num_classes,
                           patience = patience,
                           device = device,
-                          net = net,
                           checkpoint_path = checkpoint_path)
     # test_model(model, test_loader, device = device)
 

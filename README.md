@@ -2,6 +2,26 @@
 
 Project competition for the Introduction to Machine Learning course (2023/2024)
 
+## How to test a model (pre-trained model from pytorch)
+
+Follow these steps:
+
+1. Select one of the pre-trained models present in [pytorch](https://pytorch.org/vision/stable/models.html#classification).
+
+2. Create a folder for the model in the `models` folder.
+
+3. Inside the new folder, create three files: `config.yml`, `main.py` and `README.md` (to clarify what the model does).
+
+4. Call the main function with the required parameters (there is an example in the `SwinTransformer` folder).
+
+5. Specify the run paramenters in the `config.yml` file.
+
+6. From the terminal, move to the folder of the model and run the following command
+
+```
+python main.py --config ./config.yml --run_name <run_name>
+```
+
 ## Guidelines to download datasets
 
 The datasets can be manually downloaded and added to the `src/data` folder. This folder is however **ignored by git** and so it will only exists in the local environment.
