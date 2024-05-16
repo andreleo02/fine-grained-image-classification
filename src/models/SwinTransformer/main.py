@@ -1,5 +1,5 @@
 import argparse, sys, os
-from torchvision.models import swin_b
+from torchvision.models import swin_b, Swin_B_Weights
 from torchvision.datasets import Flowers102
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
@@ -14,6 +14,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     main(args = args,
          model_function = swin_b,
+         weights = Swin_B_Weights,
          dataset_function = Flowers102,
          dataset_name = "Flowers102",
          num_classes = 102)

@@ -114,7 +114,7 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
-def main(args, model_function, dataset_function, dataset_name, num_classes):
+def main(args, model_function, weights, dataset_function, dataset_name, num_classes):
     wandb.login()
 
     torch.manual_seed(1234)
@@ -143,7 +143,7 @@ def main(args, model_function, dataset_function, dataset_name, num_classes):
     checkpoint_path = checkpoint_path / args.run_name
     checkpoint_path.mkdir(exist_ok = True, parents = True)
 
-    model = load_model(model_function)
+    model = load_model(model_function, weights)
 
     transform = transforms.Compose([
         transforms.Resize(256),
