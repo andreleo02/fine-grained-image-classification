@@ -71,13 +71,13 @@ def train_model(model, train_loader: DataLoader, optimizer, criterion, device):
     model.train()
     model.to(device)
     train_loss = 0
-    train_acc = 0
+    train_accuracy = 0
     for images, labels in train_loader:
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
         loss = criterion(outputs, labels)
         train_loss += loss.item()
-        train_acc += calc_accuracy(labels, outputs.argmax(dim = 1))
+        train_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
         
         optimizer.zero_grad()
         loss.backward()
