@@ -27,7 +27,7 @@ def optimal_model(model,
     
     if fc:
         num_ftrs = model.classifier[1].in_features
-        model.classifier[1] = nn.Linear(num_ftrs, len(num_classes))
+        model.classifier[1] = nn.Linear(num_ftrs, num_classes)
     else:
         model.head = nn.Linear(model.head.in_features, num_classes)
 
