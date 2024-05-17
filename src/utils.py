@@ -141,7 +141,6 @@ def main(args, model, dataset_function, dataset_name, transform, criterion, opti
                   train_loader = train_loader,
                   val_loader = val_loader,
                   num_epochs = num_epochs,
-                  learning_rate = learning_rate,
                   patience = patience,
                   device = device,
                   checkpoint_path = checkpoint_path,
