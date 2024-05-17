@@ -45,7 +45,6 @@ if __name__ == "__main__":
          model = model,
          dataset_function = Flowers102,
          dataset_name = "Flowers102",
-         num_classes = num_classes,
          transform = transform,
          criterion = criterion,
          optimizer = optimizer,
