@@ -19,13 +19,6 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    transform = transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
-    ])
-
     model = load_model(efficientnet_v2_s)
 
     num_classes = 102
@@ -45,7 +38,6 @@ if __name__ == "__main__":
          model = model,
          dataset_function = Flowers102,
          dataset_name = "Flowers102",
-         transform = transform,
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,

@@ -1,6 +1,7 @@
 import os, requests, zipfile, tarfile
 import wandb
 import torch
+import torchvision.transforms.v2 as v2
 
 from torch.utils.data import DataLoader
 from pathlib import Path
@@ -25,6 +26,7 @@ def optimal_model(model,
     best_val_loss = float('inf')
     epochs_no_improve = 0
     for epoch in range(num_epochs):
+        print(f"RUNNING EPOCH {epoch} ...")
         train_loss, train_acc = train_model(model = model,
                                             train_loader = train_loader,
                                             optimizer = optimizer,
@@ -35,8 +37,8 @@ def optimal_model(model,
                                            val_loader = val_loader,
                                            criterion = criterion,
                                            device = device)
-        print(f"Epoch {epoch}, Train loss: {train_loss}, Validation loss: {val_loss}")
-        print(f"Epoch {epoch}, Train accuracy: {train_acc}, Validation accuracy: {val_acc}")
+        print(f"Training loss: {train_loss:.2}, Training accuracy: {train_acc:.2}")
+        print(f"Validation loss: {val_loss:.2}, Validation accuracy: {val_acc:.2}")
 
         wandb.log({
             "train/loss":train_loss,
@@ -105,7 +107,7 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
-def main(args, model, dataset_function, dataset_name, transform, criterion, optimizer, scheduler, device, config):
+def main(args, model, dataset_function, dataset_name, criterion, optimizer, scheduler, device, config):
     wandb.login()
 
     torch.manual_seed(1234)
@@ -130,11 +132,26 @@ def main(args, model, dataset_function, dataset_name, transform, criterion, opti
     checkpoint_path = Path("./checkpoint")
     checkpoint_path = checkpoint_path / args.run_name
     checkpoint_path.mkdir(exist_ok = True, parents = True)
+
+    train_transforms = v2.Compose([
+        v2.RandomResizedCrop(size = (224, 224), antialias = True),
+        v2.RandomHorizontalFlip(p = 0.5),
+        v2.ToDtype(torch.float32, scale = True),
+        v2.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
+    ])
+
+    val_transforms = v2.Compose([
+        v2.Resize(256),
+        v2.CenterCrop(224),
+        v2.ToTensor(),
+        v2.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
+    ])
     
     train_loader, val_loader = get_data(dataset_function = dataset_function,
-                                                     dataset_name = dataset_name,
-                                                     batch_size = batch_size,
-                                                     transform = transform)
+                                        dataset_name = dataset_name,
+                                        batch_size = batch_size,
+                                        train_transforms = train_transforms,
+                                        val_transforms = val_transforms)
     
 
     optimal_model(model = model,
@@ -150,14 +167,14 @@ def main(args, model, dataset_function, dataset_name, transform, criterion, opti
     
     # test_model(model, test_loader, device = device)
 
-def get_data(dataset_function, dataset_name, batch_size, transform):
+def get_data(dataset_function, dataset_name, batch_size, train_transforms, val_transforms):
     dataset_path = "../../data/" + dataset_name
-    train_dataset = dataset_function(root = dataset_path, split = "train", transform = transform, download = True)
-    val_dataset = dataset_function(root = dataset_path, split = "val", transform = transform, download = True)
+    train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
+    val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
     # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
 
-    train_loader = DataLoader(train_dataset, batch_size = batch_size, shuffle = True)
-    val_loader = DataLoader(val_dataset, batch_size = batch_size, shuffle = False)
+    train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
+    val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
     # test_loader = DataLoader(test_dataset, batch_size = batch_size, shuffle = False)
 
     return train_loader, val_loader
