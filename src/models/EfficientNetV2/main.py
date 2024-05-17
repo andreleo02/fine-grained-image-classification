@@ -17,4 +17,5 @@ if __name__ == "__main__":
          weights = EfficientNet_V2_S_Weights.DEFAULT,
          dataset_function = Flowers102,
          dataset_name = "Flowers102",
-         num_classes = 102)
+         num_classes = 102,
+         fc = True)

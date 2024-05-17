@@ -22,12 +22,13 @@ def optimal_model(model,
                   num_classes: int,
                   patience: int,
                   device: DeviceObjType,
-                  checkpoint_path):
+                  checkpoint_path,
+                  fc: bool):
     
-    if model.head is not None:
-        model.head = nn.Linear(model.head.in_features, num_classes)
-    else:
+    if fc:
         model.fc = nn.Linear(model.fc.in_features, num_classes)
+    else:
+        model.head = nn.Linear(model.head.in_features, num_classes)
 
     criterion = nn.CrossEntropyLoss().to(device = device)
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
@@ -118,7 +119,7 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
-def main(args, model_function, weights, dataset_function, dataset_name, num_classes):
+def main(args, model_function, weights, dataset_function, dataset_name, num_classes, fc: bool):
     wandb.login()
 
     torch.manual_seed(1234)
@@ -168,7 +169,8 @@ def main(args, model_function, weights, dataset_function, dataset_name, num_clas
                           num_classes = num_classes,
                           patience = patience,
                           device = device,
-                          checkpoint_path = checkpoint_path)
+                          checkpoint_path = checkpoint_path,
+                          fc = fc)
     # test_model(model, test_loader, device = device)
 
 def get_data(dataset_function, dataset_name, batch_size, transform):
