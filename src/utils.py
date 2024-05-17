@@ -89,7 +89,9 @@ def validate_model(model, val_loader: DataLoader, criterion, device):
             outputs = model(images)
             loss = criterion(outputs, labels)
             val_loss += loss.item()
-            val_accuracy += calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
+            batch_acc = calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
+            val_accuracy += batch_acc
+            print(f"Accuracy of the current batch: {batch_acc}")
 
     val_loss /= len(val_loader)
     val_accuracy /= len(val_loader)
