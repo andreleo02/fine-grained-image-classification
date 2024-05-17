@@ -26,7 +26,7 @@ def optimal_model(model,
     best_val_loss = float('inf')
     epochs_no_improve = 0
     for epoch in range(num_epochs):
-        print(f"RUNNING EPOCH {epoch} ...")
+        print(f"\nRUNNING EPOCH {epoch} ...")
         train_loss, train_acc = train_model(model = model,
                                             train_loader = train_loader,
                                             optimizer = optimizer,
@@ -37,8 +37,8 @@ def optimal_model(model,
                                            val_loader = val_loader,
                                            criterion = criterion,
                                            device = device)
-        print(f"Training loss: {train_loss:.2}, Training accuracy: {train_acc:.2}")
-        print(f"Validation loss: {val_loss:.2}, Validation accuracy: {val_acc:.2}")
+        print(f"Training loss: {train_loss:.3}, Training accuracy: {train_acc:.3}")
+        print(f"Validation loss: {val_loss:.3}, Validation accuracy: {val_acc:.3}")
 
         wandb.log({
             "train/loss":train_loss,
@@ -148,7 +148,6 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
     ])
     
     train_loader, val_loader = get_data(dataset_function = dataset_function,
-                                        dataset_name = dataset_name,
                                         batch_size = batch_size,
                                         train_transforms = train_transforms,
                                         val_transforms = val_transforms)
@@ -167,8 +166,8 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
     
     # test_model(model, test_loader, device = device)
 
-def get_data(dataset_function, dataset_name, batch_size, train_transforms, val_transforms):
-    dataset_path = "../../data/" + dataset_name
+def get_data(dataset_function, batch_size, train_transforms, val_transforms):
+    dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
     val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
     # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
