@@ -31,7 +31,7 @@ if __name__ == "__main__":
     learning_rate = config["training"]["lr"]
     
 
-    criterion = nn.CrossEntropyLoss().to(device = device)
+    criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = 3, gamma = 0.1)
 
@@ -43,4 +43,4 @@ if __name__ == "__main__":
          optimizer = optimizer,
          scheduler = scheduler,
          device = device,
-         config = config)    
+         config = config)
