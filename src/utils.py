@@ -1,7 +1,7 @@
 import os, requests, zipfile, tarfile
 import wandb
 import torch
-import torchvision.transforms.v2 as v2
+import torchvision.transforms as transforms
 
 from torch.utils.data import DataLoader
 from pathlib import Path
@@ -133,18 +133,18 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
     checkpoint_path = checkpoint_path / args.run_name
     checkpoint_path.mkdir(exist_ok = True, parents = True)
 
-    train_transforms = v2.Compose([
-        v2.RandomResizedCrop(size = (224, 224), antialias = True),
-        v2.RandomHorizontalFlip(p = 0.5),
-        v2.ToDtype(torch.float32, scale = True),
-        v2.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
+    train_transforms = transforms.Compose([
+        transforms.RandomResizedCrop(size = (224, 224), antialias = True),
+        transforms.RandomHorizontalFlip(p = 0.5),
+        transforms.ToTensor(),
+        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
 
-    val_transforms = v2.Compose([
-        v2.Resize(256),
-        v2.CenterCrop(224),
-        v2.ToTensor(),
-        v2.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
+    val_transforms = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
     
     train_loader, val_loader = get_data(dataset_function = dataset_function,
