@@ -27,16 +27,50 @@ def optimal_model(model,
     epochs_no_improve = 0
     for epoch in range(num_epochs):
         print(f"\nRUNNING EPOCH {epoch} ...")
-        train_loss, train_acc = train_model(model = model,
-                                            train_loader = train_loader,
-                                            optimizer = optimizer,
-                                            criterion = criterion,
-                                            device = device)
+        # train_loss, train_acc = train_model(model = model,
+        #                                     train_loader = train_loader,
+        #                                     optimizer = optimizer,
+        #                                     criterion = criterion,
+        #                                     scheduler = scheduler,
+        #                                     device = device)
+        
+        model.train()
+        model.to(device)
+        train_loss = 0
+        train_acc = 0
+        for images, labels in train_loader:
+            images, labels = images.to(device), labels.to(device)
+            outputs = model(images)
+            loss = criterion(outputs, labels)
+            train_loss += loss.item()
+            train_acc += calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
+            
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
         scheduler.step()
-        val_loss, val_acc = validate_model(model = model,
-                                           val_loader = val_loader,
-                                           criterion = criterion,
-                                           device = device)
+        train_loss /= len(train_loader)
+        train_acc /= len(train_loader)
+        # val_loss, val_acc = validate_model(model = model,
+        #                                    val_loader = val_loader,
+        #                                    criterion = criterion,
+        #                                    device = device)
+        model.eval()
+        model.to(device)
+        val_loss = 0
+        val_acc = 0
+        with torch.no_grad():
+            for images, labels in val_loader:
+                images, labels = images.to(device), labels.to(device)
+                outputs = model(images)
+                loss = criterion(outputs, labels)
+                val_loss += loss.item()
+                batch_acc = calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
+                val_acc += batch_acc
+                print(f"Accuracy of the current batch: {batch_acc}")
+
+        val_loss /= len(val_loader)
+        val_acc /= len(val_loader)
         print(f"Training loss: {train_loss:.3}, Training accuracy: {train_acc:.3}")
         print(f"Validation loss: {val_loss:.3}, Validation accuracy: {val_acc:.3}")
 
@@ -59,7 +93,7 @@ def optimal_model(model,
                 print(f"Validation loss did not imporove for {patience} epochs. Killing the training...")
                 break
 
-def train_model(model, train_loader: DataLoader, optimizer, criterion, device):
+def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):
     model.train()
     model.to(device)
     train_loss = 0
@@ -74,6 +108,7 @@ def train_model(model, train_loader: DataLoader, optimizer, criterion, device):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+    scheduler.step()
     train_loss /= len(train_loader)
     train_accuracy /= len(train_loader)
     return train_loss, train_accuracy
