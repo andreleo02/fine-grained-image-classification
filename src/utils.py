@@ -69,7 +69,7 @@ def train_model(model, train_loader: DataLoader, optimizer, criterion, device):
         outputs = model(images)
         loss = criterion(outputs, labels)
         train_loss += loss.item()
-        train_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
+        train_accuracy += calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
         
         optimizer.zero_grad()
         loss.backward()
@@ -89,7 +89,8 @@ def validate_model(model, val_loader: DataLoader, criterion, device):
             outputs = model(images)
             loss = criterion(outputs, labels)
             val_loss += loss.item()
-            val_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
+            val_accuracy += calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
+
     val_loss /= len(val_loader)
     val_accuracy /= len(val_loader)
     return val_loss, val_accuracy
@@ -181,6 +182,7 @@ def get_data(dataset_function, batch_size, train_transforms, val_transforms):
 def calc_accuracy(y_true, y_pred):
     correct = torch.eq(y_true, y_pred).sum().item()
     acc = (correct / len(y_pred)) * 100
+    print(f"Correct predictions: {correct}")
     return acc
 
 def download_dataset_zip(url: str, output_dir: str = "dataset") -> None:
