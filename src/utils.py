@@ -1,13 +1,10 @@
-import os, requests, zipfile, tarfile, yaml
+import os, requests, zipfile, tarfile
 import wandb
 import torch
-import torch.nn as nn
-import torch.optim as optim
+
 from torch.utils.data import DataLoader
-from torchvision import transforms
 from pathlib import Path
 from torch import DeviceObjType
-from torchvision import transforms
 from torch.utils.data import DataLoader
 
 
@@ -18,22 +15,12 @@ def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
                   num_epochs: int,
-                  learning_rate: float,
-                  num_classes: int,
                   patience: int,
                   device: DeviceObjType,
                   checkpoint_path,
-                  fc: bool):
-    
-    if fc:
-        num_ftrs = model.classifier[1].in_features
-        model.classifier[1] = nn.Linear(num_ftrs, num_classes)
-    else:
-        model.head = nn.Linear(model.head.in_features, num_classes)
-
-    criterion = nn.CrossEntropyLoss().to(device = device)
-    optimizer = optim.Adam(model.parameters(), lr = learning_rate)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = 3, gamma = 0.1)
+                  optimizer,
+                  criterion,
+                  scheduler):
 
     best_val_loss = float('inf')
     epochs_no_improve = 0
@@ -67,10 +54,8 @@ def optimal_model(model,
         else:
             epochs_no_improve += 1
             if epochs_no_improve == patience:
-                print(f"Validation Accuracy did not imporove for {patience} epochs. Killing the training...")
+                print(f"Validation loss did not imporove for {patience} epochs. Killing the training...")
                 break
-
-    return model
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, device):
     model.train()
@@ -120,13 +105,10 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
-def main(args, model_function, weights, dataset_function, dataset_name, num_classes, fc: bool):
+def main(args, model, dataset_function, dataset_name, transform, criterion, optimizer, scheduler, device, config):
     wandb.login()
 
     torch.manual_seed(1234)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    with open(args.config, "r") as f:
-        config = yaml.safe_load(f)
 
     net = config["net"]
     learning_rate = config["training"]["lr"]
@@ -148,30 +130,25 @@ def main(args, model_function, weights, dataset_function, dataset_name, num_clas
     checkpoint_path = Path("./checkpoint")
     checkpoint_path = checkpoint_path / args.run_name
     checkpoint_path.mkdir(exist_ok = True, parents = True)
-
-    model = load_model(model_function, weights)
-
-    transform = transforms.Compose([
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor(),
-        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
-    ])
+    
     train_loader, val_loader = get_data(dataset_function = dataset_function,
                                                      dataset_name = dataset_name,
                                                      batch_size = batch_size,
                                                      transform = transform)
     
-    model = optimal_model(model = model,
-                          train_loader = train_loader,
-                          val_loader = val_loader,
-                          num_epochs = num_epochs,
-                          learning_rate = learning_rate,
-                          num_classes = num_classes,
-                          patience = patience,
-                          device = device,
-                          checkpoint_path = checkpoint_path,
-                          fc = fc)
+
+    optimal_model(model = model,
+                  train_loader = train_loader,
+                  val_loader = val_loader,
+                  num_epochs = num_epochs,
+                  learning_rate = learning_rate,
+                  patience = patience,
+                  device = device,
+                  checkpoint_path = checkpoint_path,
+                  criterion = criterion,
+                  optimizer = optimizer,
+                  scheduler = scheduler)
+    
     # test_model(model, test_loader, device = device)
 
 def get_data(dataset_function, dataset_name, batch_size, transform):
