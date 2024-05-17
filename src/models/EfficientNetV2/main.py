@@ -19,3 +19,4 @@ if __name__ == "__main__":
          dataset_name = "Flowers102",
          num_classes = 102,
          fc = True)
+    
