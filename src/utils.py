@@ -23,7 +23,11 @@ def optimal_model(model,
                   patience: int,
                   device: DeviceObjType,
                   checkpoint_path):
-    model.head = nn.Linear(model.head.in_features, num_classes)
+    
+    if model.head is not None:
+        model.head = nn.Linear(model.head.in_features, num_classes)
+    else:
+        model.fc = nn.Linear(model.fc.in_features, num_classes)
 
     criterion = nn.CrossEntropyLoss().to(device = device)
     optimizer = optim.Adam(model.parameters(), lr = learning_rate)
