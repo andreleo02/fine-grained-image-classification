@@ -12,12 +12,15 @@ from torch.utils.data import DataLoader
 def load_model(function, weights = None):
     return function(weights = weights)
 
-def freeze_layers(model):
-    for name, child in model.named_children():
-        if name == "layer3":
+def freeze_layers(model, num_blocks_to_freeze):
+    layers_frozen = 0
+    for _, child in model.features.named_children():
+        if layers_frozen < num_blocks_to_freeze:
+            for param in child.parameters():
+                param.requires_grad = False
+            layers_frozen += 1
+        else:
             break
-        for param in child.parameters():
-            param.requires_grad = False
 
 def optimal_model(model,
                   train_loader: DataLoader,

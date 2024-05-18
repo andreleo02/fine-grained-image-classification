@@ -8,7 +8,7 @@ import torch
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
-from src.utils import main, load_model
+from src.utils import main, load_model, freeze_layers
 
 if __name__ == "__main__":
 
@@ -25,11 +25,7 @@ if __name__ == "__main__":
     num_classes = 100
 
     model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
-    for name, param in model.named_parameters():
-        if name == "features.3.0.block.0.0.weight":
-            break
-        else:
-            param.requires_grad = False
+    freeze_layers(model = model, num_blocks_to_freeze = 3)
 
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
