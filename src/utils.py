@@ -12,6 +12,13 @@ from torch.utils.data import DataLoader
 def load_model(function, weights = None):
     return function(weights = weights)
 
+def freeze_layers(model):
+    for name, child in model.named_children():
+        if name == "layer3":
+            break
+        for param in child.parameters():
+            param.requires_grad = False
+
 def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
@@ -25,6 +32,16 @@ def optimal_model(model,
 
     best_val_loss = float('inf')
     epochs_no_improve = 0
+
+    for name, child in model.named_children():
+        if name == "layer3":
+            break
+        for param in child.parameters():
+            param.requires_grad = False
+
+    # Verify freezing
+    for name, param in model.named_parameters():
+        print(f"Layer name {name}, freezed: {param.requires_grad}")
     for epoch in range(num_epochs):
         print(f"\nRUNNING EPOCH {epoch} ...")
         # train_loss, train_acc = train_model(model = model,
