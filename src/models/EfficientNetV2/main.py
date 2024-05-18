@@ -36,8 +36,8 @@ if __name__ == "__main__":
 
     main(args = args,
          model = model,
-         dataset_function = CIFAR10,
-         dataset_name = "CIFAR10",
+         dataset_function = FGVCAircraft,
+         dataset_name = "FGVCAircraft",
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,

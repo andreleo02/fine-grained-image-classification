@@ -206,10 +206,10 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
 
 def get_data(dataset_function, batch_size, train_transforms, val_transforms):
     dataset_path = "../../data/"
-    # train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-    # val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
-    train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
-    val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
+    train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
+    val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+    # train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
+    # val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
     # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
 
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
