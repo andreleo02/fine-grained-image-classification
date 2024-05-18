@@ -33,7 +33,7 @@ def optimal_model(model,
     best_val_loss = float('inf')
     epochs_no_improve = 0
 
-    for idx, name, child in enumerate(model.named_children()):
+    for idx, (name, child) in enumerate(model.named_children()):
         if idx == 3:
             break
         for param in child.parameters():
