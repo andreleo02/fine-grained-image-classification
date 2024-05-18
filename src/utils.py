@@ -33,12 +33,6 @@ def optimal_model(model,
     best_val_loss = float('inf')
     epochs_no_improve = 0
 
-    for name, param in model.named_parameters():
-        if name == "features.3.0.block.0.0.weight":
-            break
-        else:
-            param.requires_grad = False
-
     # Verify freezing
     for name, param in model.named_parameters():
         print(f"Layer name {name}, freezed: {param.requires_grad}")

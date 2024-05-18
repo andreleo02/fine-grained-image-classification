@@ -25,13 +25,18 @@ if __name__ == "__main__":
     num_classes = 100
 
     model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
+    for name, param in model.named_parameters():
+        if name == "features.3.0.block.0.0.weight":
+            break
+        else:
+            param.requires_grad = False
 
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
     learning_rate = config["training"]["lr"]
     
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(model.parameters(), lr = learning_rate, momentum = 0.9)
+    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr = learning_rate, momentum = 0.9)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = 3, gamma = 0.1)
 
     main(args = args,
