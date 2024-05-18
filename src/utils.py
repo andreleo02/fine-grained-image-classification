@@ -33,15 +33,15 @@ def optimal_model(model,
     best_val_loss = float('inf')
     epochs_no_improve = 0
 
-    for name, child in model.named_children():
+    for name, param in model.named_parameters():
         if name == "features.3.0.block.0.0.weight":
             break
-        for param in child.parameters():
+        else:
             param.requires_grad = False
 
     # Verify freezing
     for name, param in model.named_parameters():
-        print(f"Layer name {name}, freezed: {not param.requires_grad}")
+        print(f"Layer name {name}, freezed: {param.requires_grad}")
     for epoch in range(num_epochs):
         print(f"\nRUNNING EPOCH {epoch} ...")
         # train_loss, train_acc = train_model(model = model,
