@@ -33,8 +33,8 @@ def optimal_model(model,
     best_val_loss = float('inf')
     epochs_no_improve = 0
 
-    for idx, (name, child) in enumerate(model.named_children()):
-        if idx == 3:
+    for name, child in model.named_children():
+        if name == "features.3.0.block.0.0.weight":
             break
         for param in child.parameters():
             param.requires_grad = False
