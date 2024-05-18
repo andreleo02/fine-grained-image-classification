@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 from pathlib import Path
 from torch import DeviceObjType
 from torch.utils.data import DataLoader
+from kaggle.api.kaggle_api_extended import KaggleApi
 
 
 def load_model(function, weights = None):
@@ -206,8 +207,10 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
 
 def get_data(dataset_function, batch_size, train_transforms, val_transforms):
     dataset_path = "../../data/"
-    train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-    val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+    # train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
+    # val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+    train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
+    val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
     # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
 
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
@@ -221,6 +224,13 @@ def calc_accuracy(y_true, y_pred):
     acc = (correct / len(y_pred)) * 100
     print(f"Correct predictions: {correct}")
     return acc
+
+def download_dataset_from_kaggle(dataset_name: str, output_dir: str = "dataset") -> None:
+    api = KaggleApi()
+    api.authenticate()
+    final_output_dir: str = "src/data/" + output_dir
+    api.dataset_download_files(dataset = dataset_name, path = final_output_dir, unzip = True)
+    print(f"Dataset {dataset_name} downloaded correctly from Kaggle")
 
 def download_dataset_zip(url: str, output_dir: str = "dataset") -> None:
     response = requests.get(url)

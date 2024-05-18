@@ -8,7 +8,7 @@ import torch
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
-from src.utils import main, load_model
+from src.utils import main, load_model, download_dataset_from_kaggle
 
 if __name__ == "__main__":
 
@@ -30,7 +30,6 @@ if __name__ == "__main__":
         config = yaml.safe_load(f)
     learning_rate = config["training"]["lr"]
     
-
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(model.parameters(), lr = learning_rate, momentum = 0.9)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = 3, gamma = 0.1)
