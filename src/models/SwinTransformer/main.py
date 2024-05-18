@@ -1,6 +1,6 @@
 import argparse, sys, os, yaml
 from torchvision.models import swin_t, Swin_B_Weights
-from torchvision.datasets import Flowers102
+from torchvision.datasets import FGVCAircraft
 from torchvision import transforms
 import torch.nn as nn
 import torch.optim as optim
@@ -21,7 +21,7 @@ if __name__ == "__main__":
 
     model = load_model(swin_t)
 
-    num_classes = 102
+    num_classes = 100
 
     model.head = nn.Linear(model.head.in_features, num_classes)
 
@@ -36,8 +36,8 @@ if __name__ == "__main__":
     
     main(args = args,
          model = model,
-         dataset_function = Flowers102,
-         dataset_name = "Flowers102",
+         dataset_function = FGVCAircraft,
+         dataset_name = "FGVCAircraft",
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
