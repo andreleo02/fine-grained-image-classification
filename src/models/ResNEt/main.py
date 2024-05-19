@@ -1,8 +1,8 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
-from torchvision.models import ResNet18_Weights, resnet18
+from torchvision.models import ResNet18_Weights, ResNet
 from torchvision.datasets import FGVCAircraft
-import torch.optim as optim
+import torch.optim as optim 
 import torch
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
