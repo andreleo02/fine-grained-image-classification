@@ -27,7 +27,7 @@ if __name__ == "__main__":
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
     learning_rate = config["training"]["lr"]
-    frozen_layers = config["training"]["frozer_layers"]
+    frozen_layers = config["training"]["frozen_layers"]
     momentum = config["training"]["optimizer"]["momentum"]
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
