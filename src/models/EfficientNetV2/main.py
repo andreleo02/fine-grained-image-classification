@@ -1,8 +1,7 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
 from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights
-from torchvision.datasets import Flowers102, ImageNet, CIFAR10, FGVCAircraft
-from torchvision.transforms import transforms
+from torchvision.datasets import FGVCAircraft
 import torch.optim as optim
 import torch
 

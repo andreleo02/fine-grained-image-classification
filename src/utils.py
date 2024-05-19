@@ -36,9 +36,6 @@ def optimal_model(model,
     best_val_loss = float('inf')
     epochs_no_improve = 0
 
-    # Verify freezing
-    for name, param in model.named_parameters():
-        print(f"Layer name {name}, freezed: {param.requires_grad}")
     for epoch in range(num_epochs):
         print(f"\nRUNNING EPOCH {epoch} ...")
         # train_loss, train_acc = train_model(model = model,
@@ -47,7 +44,7 @@ def optimal_model(model,
         #                                     criterion = criterion,
         #                                     scheduler = scheduler,
         #                                     device = device)
-        
+        print("Training phase ...")
         model.train()
         model.to(device)
         train_loss = 0
@@ -69,6 +66,7 @@ def optimal_model(model,
         #                                    val_loader = val_loader,
         #                                    criterion = criterion,
         #                                    device = device)
+        print("Validation phase ...")
         model.eval()
         model.to(device)
         val_loss = 0
@@ -81,11 +79,10 @@ def optimal_model(model,
                 val_loss += loss.item()
                 batch_acc = calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
                 val_acc += batch_acc
-                print(f"Accuracy of the current batch: {batch_acc}")
 
         val_loss /= len(val_loader)
         val_acc /= len(val_loader)
-        print(f"Training loss: {train_loss:.3}, Training accuracy: {train_acc:.3}")
+        print(f"\nTraining loss: {train_loss:.3}, Training accuracy: {train_acc:.3}")
         print(f"Validation loss: {val_loss:.3}, Validation accuracy: {val_acc:.3}")
 
         wandb.log({
@@ -140,7 +137,6 @@ def validate_model(model, val_loader: DataLoader, criterion, device):
             val_loss += loss.item()
             batch_acc = calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
             val_accuracy += batch_acc
-            print(f"Accuracy of the current batch: {batch_acc}")
 
     val_loss /= len(val_loader)
     val_accuracy /= len(val_loader)
@@ -235,7 +231,7 @@ def get_data(dataset_function, batch_size, train_transforms, val_transforms):
 def calc_accuracy(y_true, y_pred):
     correct = torch.eq(y_true, y_pred).sum().item()
     acc = (correct / len(y_pred)) * 100
-    print(f"Correct predictions: {correct}")
+    print(f"Correct predictions: {correct} / {len(y_pred)}")
     return acc
 
 def download_dataset_zip(url: str, output_dir: str = "dataset") -> None:
@@ -261,16 +257,18 @@ def download_dataset_zip(url: str, output_dir: str = "dataset") -> None:
         print(f"Failed to download file. Status code: {response.status_code}")
 
 def download_dataset_tgz(url: str, output_dir: str = "dataset") -> None:
+    print(f"Downloading dataset from {url} ...")
     response = requests.get(url)
     final_output_dir: str = "src/data/" + output_dir
     
     if response.status_code == 200:
+        print("\nDownload completed. Extracting files ...")
         with open("tmp.tgz", "wb") as f:
             f.write(response.content)
         try:
             with tarfile.open("tmp.tgz", "r:gz") as tgz_ref:
                 tgz_ref.extractall(final_output_dir)
-            print(f"Download and extracted from {url} completed successfully!")
+            print(f"\nDownload and extracted from {url} completed successfully! Dataset saved in {final_output_dir}")
             pass
         except tarfile.TarError as e: 
             print(f"Exception while extracting files from tgz. Tar downloaded from {url}. Exception {e}")
