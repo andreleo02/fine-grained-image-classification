@@ -24,16 +24,20 @@ if __name__ == "__main__":
 
     num_classes = 100
 
-    model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
-    freeze_layers(model = model, num_blocks_to_freeze = 3)
-
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
     learning_rate = config["training"]["lr"]
+    frozen_layers = config["training"]["frozer_layers"]
+    momentum = config["training"]["optimizer"]["momentum"]
+    step_size = config["training"]["scheduler"]["step_size"]
+    gamma = config["training"]["scheduler"]["gamma"]
+
+    model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
+    freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
     
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr = learning_rate, momentum = 0.9)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = 3, gamma = 0.1)
+    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr = learning_rate, momentum = momentum)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = step_size, gamma = gamma)
 
     main(args = args,
          model = model,
