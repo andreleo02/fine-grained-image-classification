@@ -1,6 +1,6 @@
 import argparse, sys, os, yaml
 from torchvision.models import swin_t, Swin_T_Weights
-from torchvision.datasets import FGVCAircraft
+from torchvision.datasets import FGVCAircraft, Flowers102
 import torch.nn as nn
 import torch.optim as optim
 import torch
@@ -45,8 +45,8 @@ if __name__ == "__main__":
     
     main(args = args,
          model = model,
-         dataset_function = FGVCAircraft,
-         dataset_name = "FGVCAircraft",
+         dataset_function = Flowers102,
+         dataset_name = "Flowers102",
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
