@@ -28,6 +28,7 @@ if __name__ == "__main__":
     learning_rate = config["training"]["lr"]
     frozen_layers = config["training"]["frozen_layers"]
     momentum = config["training"]["optimizer"]["momentum"]
+    weight_decay = config["training"]["optimizer"]["weight_decay"]
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
 
@@ -35,7 +36,10 @@ if __name__ == "__main__":
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
     
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr = learning_rate, momentum = momentum)
+    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()),
+                          lr = learning_rate,
+                          momentum = momentum,
+                          weight_decay = weight_decay)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = step_size, gamma = gamma)
 
     main(args = args,
