@@ -1,6 +1,6 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
-from torchvision.models import ResNet18_Weights, ResNet
+from torchvision.models import ResNet18_Weights, resnet18
 from torchvision.datasets import FGVCAircraft
 import torch.optim as optim 
 import torch
