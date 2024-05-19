@@ -2,7 +2,7 @@ net: SwinTransformer
 
 training:
   num_epochs: 30
-  patience: 5
+  patience: 8
   lr: 0.01
   scheduler:
     step_size: 10
