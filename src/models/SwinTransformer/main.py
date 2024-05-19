@@ -1,14 +1,13 @@
 import argparse, sys, os, yaml
-from torchvision.models import swin_t, Swin_B_Weights
+from torchvision.models import swin_t, Swin_T_Weights
 from torchvision.datasets import FGVCAircraft
-from torchvision import transforms
 import torch.nn as nn
 import torch.optim as optim
 import torch
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
-from src.utils import main, load_model
+from src.utils import main, load_model, freeze_layers
 
 if __name__ == "__main__":
 
@@ -19,11 +18,21 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = load_model(swin_t)
-
     num_classes = 100
 
+    model = load_model(swin_t, weights = Swin_T_Weights.IMAGENET1K_V1)
+
     model.head = nn.Linear(model.head.in_features, num_classes)
+
+    with open(args.config, "r") as f:
+        config = yaml.safe_load(f)
+    learning_rate = config["training"]["lr"]
+    frozen_layers = config["training"]["frozen_layers"]
+    momentum = config["training"]["optimizer"]["momentum"]
+    step_size = config["training"]["scheduler"]["step_size"]
+    gamma = config["training"]["scheduler"]["gamma"]
+
+    freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
 
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
@@ -31,8 +40,8 @@ if __name__ == "__main__":
     
 
     criterion = nn.CrossEntropyLoss().to(device = device)
-    optimizer = optim.Adam(model.parameters(), lr = learning_rate)
-    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = 3, gamma = 0.1)
+    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr = learning_rate, momentum = momentum)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = step_size, gamma = gamma)
     
     main(args = args,
          model = model,
