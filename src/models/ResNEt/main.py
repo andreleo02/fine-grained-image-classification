@@ -19,7 +19,7 @@ if __name__ == "__main__":
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: '{device}'")
 
-    model = load_model(resnet18, weights = ResNet18_Weights)
+    model = load_model(resnet18, weights = ResNet18_Weights.IMAGENET1K_V1)
 
     num_classes = 100
 
