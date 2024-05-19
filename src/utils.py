@@ -259,7 +259,6 @@ def download_dataset_zip(url: str, output_dir: str = "dataset") -> None:
 def download_dataset_tgz(url: str, output_dir: str = "dataset") -> None:
     print(f"Downloading dataset from {url} ...")
     response = requests.get(url)
-    final_output_dir: str = "src/data/" + output_dir
     
     if response.status_code == 200:
         print("\nDownload completed. Extracting files ...")
@@ -267,8 +266,8 @@ def download_dataset_tgz(url: str, output_dir: str = "dataset") -> None:
             f.write(response.content)
         try:
             with tarfile.open("tmp.tgz", "r:gz") as tgz_ref:
-                tgz_ref.extractall(final_output_dir)
-            print(f"\nDownload and extracted from {url} completed successfully! Dataset saved in {final_output_dir}")
+                tgz_ref.extractall(output_dir)
+            print(f"Download and extracted from {url} completed successfully! Extracted files in {output_dir}")
             pass
         except tarfile.TarError as e: 
             print(f"Exception while extracting files from tgz. Tar downloaded from {url}. Exception {e}")
