@@ -178,18 +178,17 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     
     if config["data"]["pytorch"]:
         train_dataset, val_dataset = get_data(dataset_function = dataset_function,
-                                            batch_size = batch_size,
-                                            train_transforms = train_transforms,
-                                            val_transforms = val_transforms)
+                                              batch_size = batch_size,
+                                              train_transforms = train_transforms,
+                                              val_transforms = val_transforms)
     elif config["data"]["custom"]:
         download_url = config["data"]["download_url"]
-        train_dataset, val_dataset = get_data_custom(data_dir = "../../data",
-                                                   dataset_name = dataset_name,
-                                                   download_url = download_url,
-                                                   num_classes = num_classes,
-                                                   batch_size = batch_size,
-                                                   train_transforms = train_transforms,
-                                                   val_transforms = val_transforms)
+        train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
+                                                     download_url = download_url,
+                                                     num_classes = num_classes,
+                                                     batch_size = batch_size,
+                                                     train_transforms = train_transforms,
+                                                     val_transforms = val_transforms)
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
@@ -208,6 +207,12 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     
     # test_model(model, test_loader, device = device)
 
+def calc_accuracy(y_true, y_pred):
+    correct = torch.eq(y_true, y_pred).sum().item()
+    acc = (correct / len(y_pred)) * 100
+    print(f"Correct predictions: {correct} / {len(y_pred)}")
+    return acc
+
 def get_data(dataset_function, train_transforms, val_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
@@ -217,12 +222,6 @@ def get_data(dataset_function, train_transforms, val_transforms):
     # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
 
     return train_dataset, val_dataset
-
-def calc_accuracy(y_true, y_pred):
-    correct = torch.eq(y_true, y_pred).sum().item()
-    acc = (correct / len(y_pred)) * 100
-    print(f"Correct predictions: {correct} / {len(y_pred)}")
-    return acc
 
 def get_data_custom(dataset_name, download_url, num_classes, train_transforms, val_transforms):
     data_dir = os.path.join("../../data", dataset_name)
