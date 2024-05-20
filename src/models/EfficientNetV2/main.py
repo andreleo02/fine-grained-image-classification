@@ -21,8 +21,6 @@ if __name__ == "__main__":
 
     model = load_model(efficientnet_v2_s, weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1)
 
-    num_classes = 100
-
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
     learning_rate = config["training"]["lr"]
@@ -31,6 +29,7 @@ if __name__ == "__main__":
     weight_decay = config["training"]["optimizer"]["weight_decay"]
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
+    num_classes = config["data"]["num_classes"]
 
     model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
@@ -46,6 +45,7 @@ if __name__ == "__main__":
          model = model,
          dataset_function = FGVCAircraft,
          dataset_name = "FGVCAircraft",
+         num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,

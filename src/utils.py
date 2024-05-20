@@ -2,6 +2,7 @@ import os, requests, zipfile, tarfile
 import wandb
 import torch
 import torchvision.transforms as transforms
+import torchvision.datasets as datasets
 
 from torch.utils.data import DataLoader
 from pathlib import Path
@@ -155,7 +156,7 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
-def main(args, model, dataset_function, dataset_name, criterion, optimizer, scheduler, device, config):
+def main(args, model, dataset_function, num_classes, dataset_name, criterion, optimizer, scheduler, device, config):
     wandb.login()
 
     torch.manual_seed(1234)
@@ -195,11 +196,15 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
         transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
     
-    train_loader, val_loader = get_data(dataset_function = dataset_function,
-                                        batch_size = batch_size,
-                                        train_transforms = train_transforms,
-                                        val_transforms = val_transforms)
-    
+    # train_loader, val_loader = get_data(dataset_function = dataset_function,
+    #                                     batch_size = batch_size,
+    #                                     train_transforms = train_transforms,
+    #                                     val_transforms = val_transforms)
+    train_loader, val_loader = get_data_custom(data_dir = "../../data/cub",
+                                               num_classes = num_classes,
+                                               batch_size = batch_size,
+                                               train_transforms = train_transforms,
+                                               val_transforms = val_transforms)
 
     optimal_model(model = model,
                   train_loader = train_loader,
@@ -233,6 +238,57 @@ def calc_accuracy(y_true, y_pred):
     acc = (correct / len(y_pred)) * 100
     print(f"Correct predictions: {correct} / {len(y_pred)}")
     return acc
+
+import os
+import shutil
+from sklearn.model_selection import train_test_split
+
+def get_data_custom(data_dir, num_classes, batch_size, train_transforms, val_transforms):
+    download_dataset_tgz(url = "https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz", output_dir = data_dir)
+
+    images_dir = os.path.join(data_dir, 'images')
+    train_dir = os.path.join(data_dir, 'train')
+    val_dir = os.path.join(data_dir, 'val')
+
+    with open(os.path.join(data_dir, 'images.txt')) as f:
+        images = [line.strip().split() for line in f.readlines()]
+
+    with open(os.path.join(data_dir, 'image_class_labels.txt')) as f:
+        labels = [line.strip().split() for line in f.readlines()]
+
+    with open(os.path.join(data_dir, 'train_test_split.txt')) as f:
+        train_test_split = [line.strip().split() for line in f.readlines()]
+
+    os.makedirs(train_dir, exist_ok = True)
+    os.makedirs(val_dir, exist_ok = True)
+
+    for i in range(1, num_classes):
+        os.makedirs(os.path.join(train_dir, str(i)), exist_ok = True)
+        os.makedirs(os.path.join(val_dir, str(i)), exist_ok = True)
+
+    file_paths = [os.path.join(images_dir, img[1]) for img in images]
+    labels = [int(label[1]) for label in labels]
+    train_test_split = [int(split[1]) for split in train_test_split]
+
+    data = list(zip(file_paths, labels, train_test_split))
+
+    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.3, stratify = [item[1] for item in data if item[2] == 1])
+
+    def copy_files(data, target_dir):
+        for file_path, label, _ in data:
+            target_class_dir = os.path.join(target_dir, str(label))
+            shutil.copy(file_path, target_class_dir)
+
+    copy_files(train_data, train_dir)
+    copy_files(val_data, val_dir)
+
+    train_dataset = datasets.ImageFolder(train_dir, transform = train_transforms)
+    val_dataset = datasets.ImageFolder(val_dir, transform = val_transforms)
+
+    train_loader = DataLoader(train_dataset, batch_size = batch_size, shuffle = True, num_workers = 4)
+    val_loader = DataLoader(val_dataset, batch_size = batch_size, shuffle = False, num_workers = 4)
+
+    return train_loader, val_loader
 
 def download_dataset_zip(url: str, output_dir: str = "dataset") -> None:
     response = requests.get(url)
