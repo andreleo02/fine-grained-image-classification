@@ -14,4 +14,4 @@ training:
 
 data:
   batch_size: 32
-  num_classes: 201
+  num_classes: 200

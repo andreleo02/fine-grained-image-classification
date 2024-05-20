@@ -200,7 +200,8 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     #                                     batch_size = batch_size,
     #                                     train_transforms = train_transforms,
     #                                     val_transforms = val_transforms)
-    train_loader, val_loader = get_data_custom(data_dir = "../../data/CUB_200_2011",
+    train_loader, val_loader = get_data_custom(data_dir = "../../data",
+                                               dataset_name = dataset_name,
                                                num_classes = num_classes,
                                                batch_size = batch_size,
                                                train_transforms = train_transforms,
@@ -243,9 +244,10 @@ import os
 import shutil
 from sklearn.model_selection import train_test_split
 
-def get_data_custom(data_dir, num_classes, batch_size, train_transforms, val_transforms):
+def get_data_custom(data_dir, dataset_name, num_classes, batch_size, train_transforms, val_transforms):
     download_dataset_tgz(url = "https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz", output_dir = data_dir)
 
+    data_dir = os.path.join(data_dir, dataset_name)
     images_dir = os.path.join(data_dir, 'images')
     train_dir = os.path.join(data_dir, 'train')
     val_dir = os.path.join(data_dir, 'val')
