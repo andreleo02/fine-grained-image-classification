@@ -155,7 +155,7 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
-def main(args, model, dataset_function, dataset_name, download_dataset, output_dir,  criterion, optimizer, scheduler, device, config):
+def main(args, model, dataset_function, dataset_name, download_dataset,  criterion, optimizer, scheduler, device, config):
     wandb.login()
 
     torch.manual_seed(1234)
