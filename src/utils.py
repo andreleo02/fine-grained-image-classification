@@ -259,7 +259,7 @@ def get_data_custom(data_dir, dataset_name, num_classes, batch_size, train_trans
         labels = [line.strip().split() for line in f.readlines()]
 
     with open(os.path.join(data_dir, 'train_test_split.txt')) as f:
-        train_test_split = [line.strip().split() for line in f.readlines()]
+        train_test_split_dataset = [line.strip().split() for line in f.readlines()]
 
     os.makedirs(train_dir, exist_ok = True)
     os.makedirs(val_dir, exist_ok = True)
@@ -270,9 +270,9 @@ def get_data_custom(data_dir, dataset_name, num_classes, batch_size, train_trans
 
     file_paths = [os.path.join(images_dir, img[1]) for img in images]
     labels = [int(label[1]) for label in labels]
-    train_test_split = [int(split[1]) for split in train_test_split]
+    train_test_split_dataset = [int(split[1]) for split in train_test_split_dataset]
 
-    data = list(zip(file_paths, labels, train_test_split))
+    data = list(zip(file_paths, labels, train_test_split_dataset))
 
     train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.3, stratify = [item[1] for item in data if item[2] == 1])
 
