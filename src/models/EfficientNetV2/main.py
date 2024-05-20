@@ -1,7 +1,7 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
 from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights
-from torchvision.datasets import FGVCAircraft
+from torchvision.datasets import FGVCAircraft, Flowers102
 import torch.optim as optim
 import torch
 
@@ -16,7 +16,8 @@ if __name__ == "__main__":
     parser.add_argument("--run_name", required = False, type = str, help = "Name of the run")
     args = parser.parse_args()
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda")
     print(f"Using device: '{device}'")
 
     model = load_model(efficientnet_v2_s, weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1)
@@ -44,8 +45,8 @@ if __name__ == "__main__":
 
     main(args = args,
          model = model,
-         dataset_function = FGVCAircraft,
-         dataset_name = "FGVCAircraft",
+         dataset_function = Flowers102,
+         dataset_name = "Flowers102",
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
