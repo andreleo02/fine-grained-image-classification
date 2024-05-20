@@ -155,7 +155,7 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
-def main(args, model, dataset_function, dataset_name, criterion, optimizer, scheduler, device, config):
+def main(args, model, dataset_function, dataset_name, download_dataset, output_dir,  criterion, optimizer, scheduler, device, config):
     wandb.login()
 
     torch.manual_seed(1234)
@@ -196,6 +196,7 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
     ])
     
     train_loader, val_loader = get_data(dataset_function = dataset_function,
+                                        download_dataset = download_dataset,
                                         batch_size = batch_size,
                                         train_transforms = train_transforms,
                                         val_transforms = val_transforms)
@@ -214,10 +215,14 @@ def main(args, model, dataset_function, dataset_name, criterion, optimizer, sche
     
     # test_model(model, test_loader, device = device)
 
-def get_data(dataset_function, batch_size, train_transforms, val_transforms):
+def get_data(dataset_function, download_dataset, batch_size, train_transforms, val_transforms):
     dataset_path = "../../data/"
-    train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-    val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+    if dataset_function is None:
+        download_dataset_tgz(url = download_dataset, output_dir = dataset_path)
+        # split in train test and transform
+    else:
+        train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
+        val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
     # train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
     # val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
     # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)

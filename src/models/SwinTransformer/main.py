@@ -45,8 +45,9 @@ if __name__ == "__main__":
     
     main(args = args,
          model = model,
-         dataset_function = Flowers102 ,
-         dataset_name = "Flowers102 ",
+         dataset_function = None,
+         dataset_name = "CUB",
+         download_dataset = "https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz",
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
