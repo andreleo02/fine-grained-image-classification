@@ -221,11 +221,11 @@ def get_data(dataset_function, download_dataset, batch_size, train_transforms, v
         download_dataset_tgz(url = download_dataset, output_dir = dataset_path)
         # split in train test and transform
     else:
-        train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-        val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
-    # train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
-    # val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
-    # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
+        #train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
+        #val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+        train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
+        val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
+    #test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
 
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
