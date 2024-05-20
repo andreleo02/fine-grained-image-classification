@@ -1,6 +1,6 @@
 import argparse, sys, os, yaml
 from torchvision.models import swin_t, Swin_T_Weights
-from torchvision.datasets import FGVCAircraft, Flowers102 
+from torchvision.datasets import FGVCAircraft, Flowers102, Caltech101
 import torch.nn as nn
 import torch.optim as optim
 import torch
@@ -45,9 +45,9 @@ if __name__ == "__main__":
     
     main(args = args,
          model = model,
-         dataset_function = None,
-         dataset_name = "CUB",
-         download_dataset = "https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz",
+         dataset_function = Caltech101,
+         dataset_name = "Caltech101",
+         #download_dataset = #"https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz",
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
