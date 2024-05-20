@@ -200,7 +200,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     #                                     batch_size = batch_size,
     #                                     train_transforms = train_transforms,
     #                                     val_transforms = val_transforms)
-    train_loader, val_loader = get_data_custom(data_dir = "../../data/cub",
+    train_loader, val_loader = get_data_custom(data_dir = "../../data/CUB_200_2011",
                                                num_classes = num_classes,
                                                batch_size = batch_size,
                                                train_transforms = train_transforms,
