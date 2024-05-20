@@ -20,7 +20,7 @@ def freeze_layers(model, num_blocks_to_freeze):
                 param.requires_grad = False
             layers_frozen += 1
         else:
-            break
+            break   
 
 def optimal_model(model,
                   train_loader: DataLoader,
