@@ -48,7 +48,6 @@ if __name__ == "__main__":
          dataset_function = Caltech101,
          dataset_name = "Caltech101",
          download_dataset = False,
-         output_dir= "../../data",
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
