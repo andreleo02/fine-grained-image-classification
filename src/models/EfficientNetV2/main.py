@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     model = load_model(efficientnet_v2_s, weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1)
 
-    num_classes = 100
+    num_classes = 102
 
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
