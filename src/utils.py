@@ -178,7 +178,6 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     
     if config["data"]["pytorch"]:
         train_dataset, val_dataset = get_data(dataset_function = dataset_function,
-                                              batch_size = batch_size,
                                               train_transforms = train_transforms,
                                               val_transforms = val_transforms)
     elif config["data"]["custom"]:
@@ -186,7 +185,6 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
                                                      download_url = download_url,
                                                      num_classes = num_classes,
-                                                     batch_size = batch_size,
                                                      train_transforms = train_transforms,
                                                      val_transforms = val_transforms)
     
