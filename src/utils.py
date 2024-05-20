@@ -223,13 +223,8 @@ def get_data(dataset_function, download_dataset, batch_size, train_transforms, v
         download_dataset_tgz(url = download_dataset, output_dir = dataset_path)
         # split in train test and transform
     else:
-        full_dataset = dataset_function(root=dataset_path, target_type='category', transform=train_transforms, download=True)
-        train_size = int(0.8 * len(full_dataset))
-        val_size = len(full_dataset) - train_size
-        train_dataset, val_dataset = random_split(full_dataset, [train_size, val_size])
-        val_dataset.dataset.transform = val_transforms  
-        #train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-        #val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+        train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
+        val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
    
     #train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
     #val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
