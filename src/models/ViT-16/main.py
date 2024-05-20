@@ -32,7 +32,7 @@ if __name__ == "__main__":
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
 
-    model.fc = nn.Linear(model.fc.in_features, num_classes)  # Correctly modifying the fc layer
+    #model.fc = nn.Linear(model.fc.in_features, num_classes)  # Correctly modifying the fc layer
     freeze_layers(model=model, num_blocks_to_freeze=frozen_layers)
 
     criterion = nn.CrossEntropyLoss()
