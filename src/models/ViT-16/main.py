@@ -31,7 +31,8 @@ if __name__ == "__main__":
     num_classes = config["data"]["num_classes"]
 
     # model.heads = nn.Linear(model.heads.in_features, num_classes)  # Correctly modifying the fc layer
-    print(p for p in model.named_parameters())
+    for p in model.named_parameters():
+        print(p)
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
 
     criterion = nn.CrossEntropyLoss()
