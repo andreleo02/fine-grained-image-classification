@@ -1,6 +1,6 @@
 import argparse, sys, os, yaml
 from torchvision.models import swin_t, Swin_T_Weights
-from torchvision.datasets import FGVCAircraft
+from torchvision.datasets import FGVCAircraft, Flowers102
 import torch.nn as nn
 import torch.optim as optim
 import torch
@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    num_classes = 100
+    num_classes = 102
 
     model = load_model(swin_t, weights = Swin_T_Weights.IMAGENET1K_V1)
 
@@ -45,8 +45,9 @@ if __name__ == "__main__":
     
     main(args = args,
          model = model,
-         dataset_function = FGVCAircraft,
-         dataset_name = "FGVCAircraft",
+         dataset_function = Flowers102,
+         dataset_name = "lowers102",
+         download_dataset = False,
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,

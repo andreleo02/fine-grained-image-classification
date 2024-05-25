@@ -5,6 +5,7 @@ import time
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
+from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from pathlib import Path
@@ -23,7 +24,7 @@ def freeze_layers(model, num_blocks_to_freeze):
                 param.requires_grad = False
             layers_frozen += 1
         else:
-            break
+            break   
 
 def optimal_model(model,
                   train_loader: DataLoader,
@@ -131,6 +132,7 @@ def test_model(model, test_loader: DataLoader, device):
 
     print(f"Test accuracy: {test_accuracy}")
 
+
 def main(args, model, dataset_function, num_classes, dataset_name, criterion, optimizer, scheduler, device, config):
     wandb.login()
 
@@ -181,7 +183,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         transforms.ToTensor(),
         transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
-    
+
     if config["data"]["pytorch"]:
         train_dataset, val_dataset = get_data(dataset_function = dataset_function,
                                               train_transforms = train_transforms,
@@ -221,9 +223,9 @@ def get_data(dataset_function, train_transforms, val_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
     val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
-    # train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
-    # val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
-    # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
+    #train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
+    #val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
+    #test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
 
     return train_dataset, val_dataset
 
