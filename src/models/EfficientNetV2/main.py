@@ -1,7 +1,7 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
 from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights
-from torchvision.datasets import FGVCAircraft
+from torchvision.datasets import FGVCAircraft, Flowers102
 import torch.optim as optim
 import torch
 
@@ -17,11 +17,8 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: '{device}'")
 
     model = load_model(efficientnet_v2_s, weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1)
-
-    num_classes = 100
 
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
@@ -31,6 +28,7 @@ if __name__ == "__main__":
     weight_decay = config["training"]["optimizer"]["weight_decay"]
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
+    num_classes = config["data"]["num_classes"]
 
     model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
@@ -45,7 +43,8 @@ if __name__ == "__main__":
     main(args = args,
          model = model,
          dataset_function = FGVCAircraft,
-         dataset_name = "FGVCAircraft",
+         dataset_name = "CUB_200_2011",
+         num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
