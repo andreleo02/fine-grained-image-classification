@@ -1,7 +1,7 @@
 net: EfficientNetV2
 
 training:
-  num_epochs: 30
+  num_epochs: 50
   patience: 5
   lr: 0.01
   scheduler:

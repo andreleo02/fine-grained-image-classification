@@ -1,6 +1,7 @@
 import os, requests, zipfile, tarfile, shutil
 import wandb
 import torch
+import time
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
@@ -34,6 +35,7 @@ def optimal_model(model,
                   optimizer,
                   criterion,
                   scheduler):
+    start_time = time.time()
 
     best_val_loss = float('inf')
     epochs_no_improve = 0
@@ -71,6 +73,10 @@ def optimal_model(model,
             if epochs_no_improve == patience:
                 print(f"Validation loss did not imporove for {patience} epochs. Killing the training...")
                 break
+    end_time = time.time()
+    wandb.log({
+        "training_time": f"{(end_time - start_time):.3} seconds"
+    })
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):
     print("Training phase ...")
