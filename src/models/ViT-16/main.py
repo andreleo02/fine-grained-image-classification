@@ -9,6 +9,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.
 
 from src.utils import main, load_model, freeze_layers
 
+def freeze_layers_vit(model):
+    for name, param in model.named_parameters():
+        if 'head' not in name: 
+            param.requires_grad = False
+
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser("")
@@ -31,9 +36,9 @@ if __name__ == "__main__":
     num_classes = config["data"]["num_classes"]
 
     # model.heads = nn.Linear(model.heads.in_features, num_classes)  # Correctly modifying the fc layer
+    freeze_layers_vit(model = model)
     for p in model.named_parameters():
         print(p)
-    freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()),
