@@ -37,8 +37,6 @@ if __name__ == "__main__":
 
     # model.heads = nn.Linear(model.heads.in_features, num_classes)  # Correctly modifying the fc layer
     freeze_layers_vit(model = model)
-    for p in model.named_parameters():
-        print(p)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()),
