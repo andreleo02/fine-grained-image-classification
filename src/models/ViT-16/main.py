@@ -51,6 +51,7 @@ if __name__ == "__main__":
          model = model,
          dataset_function = FGVCAircraft,
          dataset_name = "FGVCAircraft",
+         num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
