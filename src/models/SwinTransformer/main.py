@@ -46,7 +46,7 @@ if __name__ == "__main__":
     main(args = args,
          model = model,
          dataset_function = Flowers102,
-         dataset_name = "lowers102",
+         dataset_name = "Flowers102",
          download_dataset = False,
          criterion = criterion,
          optimizer = optimizer,

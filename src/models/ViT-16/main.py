@@ -1,7 +1,7 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
 from torchvision.models import vit_b_16, ViT_B_16_Weights
-from torchvision.datasets import FGVCAircraft
+from torchvision.datasets import FGVCAircraft, flowers102
 import torch.optim as optim
 import torch
 
@@ -47,8 +47,8 @@ if __name__ == "__main__":
 
     main(args = args,
          model = model,
-         dataset_function = FGVCAircraft,
-         dataset_name = "FGVCAircraft",
+         dataset_function = flowers102,
+         dataset_name = "flowers102",
          num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
