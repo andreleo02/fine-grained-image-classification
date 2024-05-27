@@ -262,7 +262,7 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
 
     data = list(zip(file_paths, labels, train_test_split_dataset))
 
-    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.3, stratify = [item[1] for item in data if item[2] == 1])
+    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.5, stratify = [item[1] for item in data if item[2] == 1])
 
     def copy_files(data, target_dir):
         for file_path, label, _ in data:
