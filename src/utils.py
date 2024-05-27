@@ -29,6 +29,7 @@ def freeze_layers(model, num_blocks_to_freeze):
 def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
+                  test_loader: DataLoader,
                   num_epochs: int,
                   patience: int,
                   device: DeviceObjType,
@@ -75,9 +76,13 @@ def optimal_model(model,
                 print(f"Validation loss did not imporove for {patience} epochs. Killing the training...")
                 break
     end_time = time.time()
+    model.load_state_dict(torch.load(checkpoint_path / f'best.pth'))
+    test_accuracy = test_model(model = model, test_loader = test_loader, device = device)
     wandb.log({
-        "training_time": f"{(end_time - start_time):.3} seconds"
+        "training_time": f"{(end_time - start_time):.3} seconds",
+        "test_accuracy": test_accuracy
     })
+
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):
     print("Training phase ...")
@@ -130,7 +135,7 @@ def test_model(model, test_loader: DataLoader, device):
             test_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
     test_accuracy /= len(test_loader)
 
-    print(f"Test accuracy: {test_accuracy}")
+    return test_accuracy
 
 
 def main(args, model, dataset_function, num_classes, dataset_name, criterion, optimizer, scheduler, device, config):
@@ -185,7 +190,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     ])
 
     if config["data"]["pytorch"]:
-        train_dataset, val_dataset = get_data(dataset_function = dataset_function,
+        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
                                               train_transforms = train_transforms,
                                               val_transforms = val_transforms)
     elif config["data"]["custom"]:
@@ -198,11 +203,12 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
-    # test_loader = DataLoader(test_dataset, batch_size = batch_size, shuffle = False)
+    test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
 
     optimal_model(model = model,
                   train_loader = train_loader,
                   val_loader = val_loader,
+                  test_loader = test_loader,
                   num_epochs = num_epochs,
                   patience = patience,
                   device = device,
@@ -223,11 +229,11 @@ def get_data(dataset_function, train_transforms, val_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
     val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+    test_dataset = dataset_function(root = dataset_path, split = "test", transform = val_transforms, download = True)
     #train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
     #val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
-    #test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
 
-    return train_dataset, val_dataset
+    return train_dataset, val_dataset, test_dataset
 
 def get_data_custom(dataset_name, download_url, num_classes, train_transforms, val_transforms):
     data_dir = os.path.join("../../data", dataset_name)
