@@ -2,6 +2,7 @@ import os, requests, zipfile, tarfile, shutil
 import wandb
 import torch
 import time
+import json
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
@@ -29,6 +30,8 @@ def freeze_layers(model, num_blocks_to_freeze):
 def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
+                  test_loader: DataLoader,
+                  labels,
                   num_epochs: int,
                   patience: int,
                   device: DeviceObjType,
@@ -78,6 +81,24 @@ def optimal_model(model,
     wandb.log({
         "training_time": f"{(end_time - start_time):.3} seconds"
     })
+    preds = test_model(model = model, test_loader = test_loader, device = device, labels = labels)
+    res = {
+        "images": preds,
+        "groupname": "Deep Dream Team"
+    }
+    print(res)
+    # submit(results = res)
+
+
+def submit(results, url = "https://competition-production.up.railway.app/results/"):
+    res = json.dumps(results)
+    response = requests.post(url, res)
+    try:
+        result = json.loads(response.text)
+        print(f"accuracy is {result['accuracy']}")
+    except json.JSONDecodeError:
+        print(f"ERROR: {response.text}")
+
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):
     print("Training phase ...")
@@ -112,25 +133,25 @@ def validate_model(model, val_loader: DataLoader, criterion, device):
             outputs = model(images)
             loss = criterion(outputs, labels)
             val_loss += loss.item()
-            batch_acc = calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
-            val_accuracy += batch_acc
+            val_accuracy += calc_accuracy(labels, torch.argmax(input = outputs, dim = 1))
 
     val_loss /= len(val_loader)
     val_accuracy /= len(val_loader)
     return val_loss, val_accuracy
 
-def test_model(model, test_loader: DataLoader, device):
+def test_model(model, test_loader: DataLoader, device, labels):
+    print("Test phase ...")
     model.eval()
     model.to(device)
-    test_accuracy = 0
+    preds = {}
     with torch.no_grad():
-        for images, labels in test_loader:
-            images, labels = images.to(device), labels.to(device)
+        for images, image_ids in test_loader:
+            images = images.to(device)
             outputs = model(images)
-            test_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
-    test_accuracy /= len(test_loader)
-
-    print(f"Test accuracy: {test_accuracy}")
+            predicted = torch.argmax(input = outputs, dim = 1)
+            for i in range(image_ids):
+                preds[image_ids[i]] = labels[predicted[i]]  
+    return preds
 
 
 def main(args, model, dataset_function, num_classes, dataset_name, criterion, optimizer, scheduler, device, config):
@@ -185,24 +206,30 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     ])
 
     if config["data"]["pytorch"]:
-        train_dataset, val_dataset = get_data(dataset_function = dataset_function,
-                                              train_transforms = train_transforms,
-                                              val_transforms = val_transforms)
+        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
+                                                            train_transforms = train_transforms,
+                                                            val_transforms = val_transforms)
     elif config["data"]["custom"]:
         download_url = config["data"]["download_url"]
-        train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
+        train_dataset, test_dataset = get_data_custom(dataset_name = dataset_name,
                                                      download_url = download_url,
                                                      num_classes = num_classes,
                                                      train_transforms = train_transforms,
                                                      val_transforms = val_transforms)
+    labels = test_dataset.classes
+    print(labels)
+    print("\n")
+    print(test_dataset.samples)
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
-    val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
-    # test_loader = DataLoader(test_dataset, batch_size = batch_size, shuffle = False)
+    val_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
+    test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
 
     optimal_model(model = model,
                   train_loader = train_loader,
                   val_loader = val_loader,
+                  test_loader = test_loader,
+                  labels = labels,
                   num_epochs = num_epochs,
                   patience = patience,
                   device = device,
@@ -211,7 +238,6 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
                   optimizer = optimizer,
                   scheduler = scheduler)
     
-    # test_model(model, test_loader, device = device)
 
 def calc_accuracy(y_true, y_pred):
     correct = torch.eq(y_true, y_pred).sum().item()
@@ -223,11 +249,9 @@ def get_data(dataset_function, train_transforms, val_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
     val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
-    #train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
-    #val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
-    #test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
+    test_dataset = dataset_function(root = dataset_path, split = "test", transform = val_transforms, download = True)
 
-    return train_dataset, val_dataset
+    return train_dataset, val_dataset, test_dataset
 
 def get_data_custom(dataset_name, download_url, num_classes, train_transforms, val_transforms):
     data_dir = os.path.join("../../data", dataset_name)
@@ -262,7 +286,7 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
 
     data = list(zip(file_paths, labels, train_test_split_dataset))
 
-    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.3, stratify = [item[1] for item in data if item[2] == 1])
+    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.5, stratify = [item[1] for item in data if item[2] == 1])
 
     def copy_files(data, target_dir):
         for file_path, label, _ in data:
@@ -320,3 +344,27 @@ def download_dataset_tgz(url: str, output_dir: str = "../../data") -> None:
             print(f"Error occurred: {e}")
     else:
         print(f"Failed to download file. Status code: {response.status_code}")
+
+
+from torch.utils.data import Dataset
+from PIL import Image
+import os
+
+class CustomDataset(Dataset):
+    def __init__(self, image_dir, transform = None):
+        self.image_dir = image_dir
+        self.transform = transform
+        self.image_files = os.listdir(image_dir)
+
+    def __len__(self):
+        return len(self.image_files)
+
+    def __getitem__(self, idx):
+        img_name = self.image_files[idx]
+        img_path = os.path.join(self.image_dir, img_name)
+        image = Image.open(img_path).convert('RGB')
+
+        if self.transform:
+            image = self.transform(image)
+
+        return image, img_name
