@@ -11,7 +11,6 @@ from src.utils import main, load_model, freeze_layers
 
 def freeze_layers_vit(model):
     for name, param in model.named_parameters():
-        print(name)
         if 'head' not in name: 
             param.requires_grad = False
 
@@ -36,7 +35,7 @@ if __name__ == "__main__":
     gamma = config["training"]["scheduler"]["gamma"]
     num_classes = config["data"]["num_classes"]
 
-    # model.heads = nn.Linear(model.heads.in_features, num_classes)  # Correctly modifying the fc layer
+    model.num_classes = num_classes
     freeze_layers_vit(model = model)
 
     criterion = nn.CrossEntropyLoss()
