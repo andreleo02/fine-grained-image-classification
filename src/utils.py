@@ -233,7 +233,7 @@ def get_data(dataset_function, train_transforms, val_transforms):
     #train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
     #val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
 
-    return train_dataset, val_dataset
+    return train_dataset, val_dataset, test_dataset
 
 def get_data_custom(dataset_name, download_url, num_classes, train_transforms, val_transforms):
     data_dir = os.path.join("../../data", dataset_name)
