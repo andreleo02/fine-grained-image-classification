@@ -30,7 +30,7 @@ if __name__ == "__main__":
     gamma = config["training"]["scheduler"]["gamma"]
     num_classes = config["data"]["num_classes"]
 
-    model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
+    model.head = nn.Linear(model.head.in_features, num_classes)
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
     
     criterion = nn.CrossEntropyLoss()
