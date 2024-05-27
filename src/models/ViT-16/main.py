@@ -1,7 +1,7 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
 from torchvision.models import vit_b_16, ViT_B_16_Weights
-from torchvision.datasets import FGVCAircraft, flowers102
+from torchvision.datasets import FGVCAircraft, Flowers102
 import torch.optim as optim
 import torch
 
@@ -11,6 +11,7 @@ from src.utils import main, load_model, freeze_layers
 
 def freeze_layers_vit(model):
     for name, param in model.named_parameters():
+        print(name)
         if 'head' not in name: 
             param.requires_grad = False
 
@@ -36,7 +37,7 @@ if __name__ == "__main__":
     num_classes = config["data"]["num_classes"]
 
     # model.heads = nn.Linear(model.heads.in_features, num_classes)  # Correctly modifying the fc layer
-    freeze_layers_vit(model = model)
+    # freeze_layers_vit(model = model)
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()),
@@ -47,8 +48,8 @@ if __name__ == "__main__":
 
     main(args = args,
          model = model,
-         dataset_function = flowers102,
-         dataset_name = "flowers102",
+         dataset_function = Flowers102,
+         dataset_name = "Flowers102",
          num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
