@@ -1,4 +1,4 @@
-net: SwinTransformer
+net: resnet34
 
 training:
   num_epochs: 30
@@ -17,4 +17,4 @@ data:
   num_classes: 200
   pytorch: False
   custom: True
-  download_url: https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz
+  download_url: "https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz"
