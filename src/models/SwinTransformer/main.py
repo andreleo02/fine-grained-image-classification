@@ -18,39 +18,35 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    num_classes = 102
-
     model = load_model(swin_t, weights = Swin_T_Weights.IMAGENET1K_V1)
-
-    model.head = nn.Linear(model.head.in_features, num_classes)
 
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
     learning_rate = config["training"]["lr"]
     frozen_layers = config["training"]["frozen_layers"]
     momentum = config["training"]["optimizer"]["momentum"]
+    weight_decay = config["training"]["optimizer"]["weight_decay"]
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
+    num_classes = config["data"]["num_classes"]
 
+    model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
-
-    with open(args.config, "r") as f:
-        config = yaml.safe_load(f)
-    learning_rate = config["training"]["lr"]
     
-
-    criterion = nn.CrossEntropyLoss().to(device = device)
-    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()), lr = learning_rate, momentum = momentum)
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()),
+                          lr = learning_rate,
+                          momentum = momentum,
+                          weight_decay = weight_decay)
     scheduler = optim.lr_scheduler.StepLR(optimizer, step_size = step_size, gamma = gamma)
-    
+
     main(args = args,
          model = model,
-         dataset_function = Flowers102,
-         dataset_name = "lowers102",
-         download_dataset = False,
+         dataset_function = FGVCAircraft,
+         dataset_name = "CUB_200_2011",
+         num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
          device = device,
          config = config)
-    
