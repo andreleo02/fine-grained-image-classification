@@ -154,23 +154,6 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     gamma = config["training"]["scheduler"]["gamma"]
     batch_size = config["data"]["batch_size"]
 
-    wandb.init(
-        project = "Competition",
-        name = f"{args.run_name}",
-        config = {
-        "learning_rate": learning_rate,
-        "architecture": net,
-        "dataset": dataset_name,
-        "num_classes": num_classes,
-        "epochs": num_epochs,
-        "batch_size": batch_size,
-        "frozen_layers": frozen_layers,
-        "momentum": momentum,
-        "weight_decay": weight_decay,
-        "step_size": step_size,
-        "gamma": gamma
-        })
-
     checkpoint_path = Path("./checkpoint")
     checkpoint_path = checkpoint_path / args.run_name
     checkpoint_path.mkdir(exist_ok = True, parents = True)
@@ -206,14 +189,32 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
 
     num_train = int(len(train_dataset) * train_ratio)
     num_val = int(len(train_dataset) * val_ratio)
-    print(f"\nImages in train {num_train}")
-    print(f"\nImages in val {num_val}")
 
     train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
     test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
+
+    wandb.init(
+        project = "Competition",
+        name = f"{args.run_name}",
+        config = {
+        "learning_rate": learning_rate,
+        "architecture": net,
+        "dataset": dataset_name,
+        "num_classes": num_classes,
+        "epochs": num_epochs,
+        "batch_size": batch_size,
+        "frozen_layers": frozen_layers,
+        "momentum": momentum,
+        "weight_decay": weight_decay,
+        "step_size": step_size,
+        "gamma": gamma,
+        "train_size": num_train,
+        "validation_size": num_val,
+        "test_size": len(test_dataset)
+        })
 
     optimal_model(model = model,
                   train_loader = train_loader,
