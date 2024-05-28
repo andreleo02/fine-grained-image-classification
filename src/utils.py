@@ -7,7 +7,7 @@ import torchvision.datasets as datasets
 
 from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, random_split
 from pathlib import Path
 from torch import DeviceObjType
 from torch.utils.data import DataLoader
@@ -182,7 +182,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
 
-    val_transforms = transforms.Compose([
+    test_transforms = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
@@ -190,16 +190,26 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     ])
 
     if config["data"]["pytorch"]:
-        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
+        train_dataset, test_dataset = get_data(dataset_function = dataset_function,
                                               train_transforms = train_transforms,
-                                              val_transforms = val_transforms)
+                                              test_transforms = test_transforms)
     elif config["data"]["custom"]:
         download_url = config["data"]["download_url"]
-        train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
+        train_dataset, test_dataset = get_data_custom(dataset_name = dataset_name,
                                                      download_url = download_url,
                                                      num_classes = num_classes,
                                                      train_transforms = train_transforms,
-                                                     val_transforms = val_transforms)
+                                                     test_transforms = test_transforms)
+        
+    train_ratio = 0.9
+    val_ratio = 0.1
+
+    num_train = int(len(train_dataset) * train_ratio)
+    num_val = int(len(train_dataset) * val_ratio)
+    print(f"\nImages in train {num_train}")
+    print(f"\nImages in val {num_val}")
+
+    train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
@@ -225,26 +235,27 @@ def calc_accuracy(y_true, y_pred):
     print(f"Correct predictions: {correct} / {len(y_pred)}")
     return acc
 
-def get_data(dataset_function, train_transforms, val_transforms):
+def get_data(dataset_function, train_transforms, test_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-    val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
-    test_dataset = dataset_function(root = dataset_path, split = "test", transform = val_transforms, download = True)
-    #train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
-    #val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
+    # val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+    test_dataset = dataset_function(root = dataset_path, split = "test", transform = test_transforms, download = True)
 
-    return train_dataset, val_dataset, test_dataset
+    return train_dataset, test_dataset
 
-def get_data_custom(dataset_name, download_url, num_classes, train_transforms, val_transforms):
+def get_data_custom(dataset_name, download_url: str, num_classes, train_transforms, test_transforms):
     data_dir = os.path.join("../../data", dataset_name)
     if os.path.isdir(data_dir):
         print(f"Dataset {dataset_name} already exists at path {data_dir}. Not downloading")
     else:
-        download_dataset_tgz(url = download_url)
+        if download_url.endswith(".tgz"):
+            download_dataset_tgz(url = download_url)
+        else:
+            download_dataset_zip(url = download_url)
 
     images_dir = os.path.join(data_dir, 'images')
     train_dir = os.path.join(data_dir, 'train')
-    val_dir = os.path.join(data_dir, 'val')
+    test_dir = os.path.join(data_dir, 'test')
 
     with open(os.path.join(data_dir, 'images.txt')) as f:
         images = [line.strip().split() for line in f.readlines()]
@@ -256,11 +267,11 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
         train_test_split_dataset = [line.strip().split() for line in f.readlines()]
 
     os.makedirs(train_dir, exist_ok = True)
-    os.makedirs(val_dir, exist_ok = True)
+    os.makedirs(test_dir, exist_ok = True)
 
     for i in range(1, num_classes):
         os.makedirs(os.path.join(train_dir, str(i)), exist_ok = True)
-        os.makedirs(os.path.join(val_dir, str(i)), exist_ok = True)
+        os.makedirs(os.path.join(test_dir, str(i)), exist_ok = True)
 
     file_paths = [os.path.join(images_dir, img[1]) for img in images]
     labels = [int(label[1]) for label in labels]
@@ -268,7 +279,7 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
 
     data = list(zip(file_paths, labels, train_test_split_dataset))
 
-    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.5, stratify = [item[1] for item in data if item[2] == 1])
+    train_data, test_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.2, stratify = [item[1] for item in data if item[2] == 1])
 
     def copy_files(data, target_dir):
         for file_path, label, _ in data:
@@ -276,12 +287,12 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
             shutil.copy(file_path, target_class_dir)
 
     copy_files(train_data, train_dir)
-    copy_files(val_data, val_dir)
+    copy_files(test_data, test_dir)
 
     train_dataset = datasets.ImageFolder(train_dir, transform = train_transforms)
-    val_dataset = datasets.ImageFolder(val_dir, transform = val_transforms)
+    test_dataset = datasets.ImageFolder(test_dir, transform = test_transforms)
 
-    return train_dataset, val_dataset
+    return train_dataset, test_dataset
 
 def download_dataset_zip(url: str, output_dir: str = "../../data") -> None:
     response = requests.get(url)
