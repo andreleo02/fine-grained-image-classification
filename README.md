@@ -1,21 +1,18 @@
-# deep-dream-team
+# Fine-grained image classification
 
-Project competition for the Introduction to Machine Learning course (2023/2024)
+Project competition for the Introduction to Machine Learning course (2023/2024). 
+
+Fine-grained image classification involves distinguishing between visually similar subcategories within a larger category. This task is particularly challenging due to the subtle differences in appearance that define each subcategory. Our project aims to address this challenge by employing state-of-the-art deep learning techniques and leveraging transfer learning from pre-trained models.
 
 ## How to test a model (pre-trained model from pytorch)
 
 Follow these steps:
 
 1. Select one of the pre-trained models present in [pytorch](https://pytorch.org/vision/stable/models.html#classification).
-
 2. Create a folder for the model in the `models` folder.
-
 3. Inside the new folder, create three files: `config.yml`, `main.py` and `README.md` (to clarify what the model does).
-
 4. Call the main function with the required parameters (there is an example in the `SwinTransformer` folder).
-
 5. Specify the run paramenters in the `config.yml` file.
-
 6. From the terminal, move to the folder of the model and run the following command
 
 ```
@@ -42,9 +39,7 @@ pip install --upgrade kaggle
 ```
 
 2. Create a **Kaggle account**.
-
 3. In the account settings, look for **API** and click on **Create New Token**. Automatically, a file called `kaggle.json` will be downloaded.
-
 4. Place this file in the location `~/.kaggle/kaggle.json` on your machine. You may need to create the directory and set the correct permissions.
 
 ```
