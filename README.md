@@ -35,4 +35,3 @@ To keep the process of training the models as smooth as possible, some functions
 - [Mbarki Mohamed ](https://github.com/mbarki-mohamed/)
 
 
-Finally, datasets from Kaggle can be downloaded calling the function `download_dataset_from_kaggle` and passing as argument the name of the dataset (`<author>/<name>`) and the name of the directory where the dataset will be saved. There is an example call in the `test.py` file.
