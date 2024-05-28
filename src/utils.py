@@ -188,7 +188,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     val_ratio = 0.1
 
     num_train = int(len(train_dataset) * train_ratio)
-    num_val = train_dataset - num_train
+    num_val = len(train_dataset) - num_train
 
     train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
     
