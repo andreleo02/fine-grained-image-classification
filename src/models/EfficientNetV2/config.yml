@@ -3,7 +3,7 @@ net: EfficientNetV2
 training:
   num_epochs: 50
   patience: 5
-  lr: 0.005
+  lr: 0.01
   scheduler:
     step_size: 10
     gamma: 0.1
@@ -14,7 +14,7 @@ training:
 
 data:
   batch_size: 32
-  num_classes: 200
-  pytorch: False
-  custom: True
+  num_classes: 102
+  pytorch: True
+  custom: False
   download_url: https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz
