@@ -172,8 +172,11 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
 
+    train_ratio = 0.9
+    val_ratio = 0.1
+
     if config["data"]["pytorch"]:
-        train_dataset, test_dataset = get_data(dataset_function = dataset_function,
+        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
                                               train_transforms = train_transforms,
                                               test_transforms = test_transforms)
     elif config["data"]["custom"]:
@@ -183,14 +186,9 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
                                                      num_classes = num_classes,
                                                      train_transforms = train_transforms,
                                                      test_transforms = test_transforms)
-        
-    train_ratio = 0.9
-    val_ratio = 0.1
-
-    num_train = int(len(train_dataset) * train_ratio)
-    num_val = len(train_dataset) - num_train
-
-    train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
+        num_train = int(len(train_dataset) * train_ratio)
+        num_val = len(train_dataset) - num_train
+        train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
@@ -211,8 +209,8 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         "weight_decay": weight_decay,
         "step_size": step_size,
         "gamma": gamma,
-        "train_size": num_train,
-        "validation_size": num_val,
+        "train_size": len(train_dataset),
+        "validation_size": len(val_dataset),
         "test_size": len(test_dataset)
         })
 
@@ -239,10 +237,10 @@ def calc_accuracy(y_true, y_pred):
 def get_data(dataset_function, train_transforms, test_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-    # val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
+    val_dataset = dataset_function(root = dataset_path, split = "val", transform = test_transforms, download = True)
     test_dataset = dataset_function(root = dataset_path, split = "test", transform = test_transforms, download = True)
 
-    return train_dataset, test_dataset
+    return train_dataset, val_dataset, test_dataset
 
 def get_data_custom(dataset_name, download_url: str, num_classes, train_transforms, test_transforms):
     data_dir = os.path.join("../../data", dataset_name)
