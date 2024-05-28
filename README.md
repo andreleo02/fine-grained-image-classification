@@ -3,6 +3,8 @@
 Project competition for the Introduction to Machine Learning course (2023/2024). 
 
 Fine-grained image classification involves distinguishing between visually similar subcategories within a larger category. This task is particularly challenging due to the subtle differences in appearance that define each subcategory. Our project aims to address this challenge by employing state-of-the-art deep learning techniques and leveraging transfer learning from pre-trained models.
+![unnamed](https://github.com/andreleo02/deep-dream-team/assets/159782399/6cc6bbbb-8e69-41f7-a1ac-b18b3883a875)https://github.com/andreleo02/deep-dream-team/blob/main/README.md
+
 
 ## How to test a model (pre-trained model from pytorch)
 
