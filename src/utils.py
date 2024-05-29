@@ -29,7 +29,7 @@ def freeze_layers(model, num_blocks_to_freeze):
 def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
-                #   test_loader: DataLoader,
+                  test_loader: DataLoader,
                   num_epochs: int,
                   patience: int,
                   device: DeviceObjType,
