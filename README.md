@@ -3,6 +3,8 @@
 Project competition for the Introduction to Machine Learning course (2023/2024). 
 
 Fine-grained image classification involves distinguishing between visually similar subcategories within a larger category. This task is particularly challenging due to the subtle differences in appearance that define each subcategory. Our project aims to address this challenge by employing state-of-the-art deep learning techniques and leveraging transfer learning from pre-trained models.
+![Fine-grained-classification-vs-general-image-classification-Finegrained-classification png](https://github.com/andreleo02/deep-dream-team/assets/159782399/6194b503-d2fb-4af1-a558-ca13bae36efc)
+
 
 ## How to test a model (pre-trained model from pytorch)
 
@@ -28,23 +30,9 @@ To keep the process of training the models as smooth as possible, some functions
 - plain download from web (`.zip` and `.tgz`)
 - download from Kaggle (with Kaggle Api)
 
-### Download from Kaggle
+## Authors
+- [Borsi Sonia](https://github.com/SoniaBorsi/)
+- [Leoni Andrea](https://github.com/andreleo02/)
+- [Mbarki Mohamed ](https://github.com/mbarki-mohamed/)
 
-An extra step is required to download datasets from Kaggle. Follow these steps to use the Kaggle download.
 
-1. **Install Kaggle** with pip.
-
-```
-pip install --upgrade kaggle
-```
-
-2. Create a **Kaggle account**.
-3. In the account settings, look for **API** and click on **Create New Token**. Automatically, a file called `kaggle.json` will be downloaded.
-4. Place this file in the location `~/.kaggle/kaggle.json` on your machine. You may need to create the directory and set the correct permissions.
-
-```
-mkdir ~/.kaggle
-chmod 600 ~/.kaggle/kaggle.json
-```
-
-Finally, datasets from Kaggle can be downloaded calling the function `download_dataset_from_kaggle` and passing as argument the name of the dataset (`<author>/<name>`) and the name of the directory where the dataset will be saved. There is an example call in the `test.py` file.
