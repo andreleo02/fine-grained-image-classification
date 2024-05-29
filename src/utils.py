@@ -188,9 +188,9 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
                                                      num_classes = num_classes,
                                                      train_transforms = train_transforms,
                                                      test_transforms = test_transforms)
-        # num_train = int(len(train_dataset) * train_ratio)
-        # num_val = len(train_dataset) - num_train
-        # train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
+        num_train = int(len(train_dataset) * train_ratio)
+        num_val = len(train_dataset) - num_train
+        train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
