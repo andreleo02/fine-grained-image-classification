@@ -11,7 +11,7 @@ from src.utils import main, load_model, freeze_layers
 
 def freeze_layers_vit(model):
     for name, param in model.named_parameters():
-        if 'head' not in name: 
+        if 'head' in name:
             param.requires_grad = False
 
 if __name__ == "__main__":
