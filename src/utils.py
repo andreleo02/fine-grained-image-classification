@@ -194,7 +194,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
-    # test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
+    test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
 
     wandb.init(
         project = "Competition",
@@ -219,7 +219,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     optimal_model(model = model,
                   train_loader = train_loader,
                   val_loader = val_loader,
-                #   test_loader = test_loader,
+                  test_loader = test_loader,
                   num_epochs = num_epochs,
                   patience = patience,
                   device = device,
