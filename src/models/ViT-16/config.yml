@@ -3,11 +3,7 @@ net: Vit-16
 training:
   num_epochs: 30
   patience: 5
-<<<<<<< HEAD
   lr: 0.001
-=======
-  lr: 0.01
->>>>>>> ca087cddeac751bbf23fea74755809609939c41d
   scheduler:
     step_size: 10
     gamma: 0.1
