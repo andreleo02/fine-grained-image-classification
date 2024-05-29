@@ -29,7 +29,7 @@ def freeze_layers(model, num_blocks_to_freeze):
 def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
-                  test_loader: DataLoader,
+                #   test_loader: DataLoader,
                   num_epochs: int,
                   patience: int,
                   device: DeviceObjType,
@@ -77,11 +77,11 @@ def optimal_model(model,
                 break
     end_time = time.time()
     model.load_state_dict(torch.load(checkpoint_path / f'best.pth'))
-    test_accuracy = test_model(model = model, test_loader = test_loader, device = device)
-    wandb.log({
-        "training_time": f"{(end_time - start_time):.3} seconds",
-        "test_accuracy": test_accuracy
-    })
+    # test_accuracy = test_model(model = model, test_loader = test_loader, device = device)
+    # wandb.log({
+    #     "training_time": f"{(end_time - start_time):.3} seconds",
+    #     "test_accuracy": test_accuracy
+    # })
 
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):
@@ -183,18 +183,18 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
                                               test_transforms = test_transforms)
     elif config["data"]["custom"]:
         download_url = config["data"]["download_url"]
-        train_dataset, test_dataset = get_data_custom(dataset_name = dataset_name,
+        train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
                                                      download_url = download_url,
                                                      num_classes = num_classes,
                                                      train_transforms = train_transforms,
                                                      test_transforms = test_transforms)
-        num_train = int(len(train_dataset) * train_ratio)
-        num_val = len(train_dataset) - num_train
-        train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
+        # num_train = int(len(train_dataset) * train_ratio)
+        # num_val = len(train_dataset) - num_train
+        # train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
-    test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
+    # test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
 
     wandb.init(
         project = "Competition",
@@ -213,13 +213,13 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         "gamma": gamma,
         "train_size": len(train_dataset),
         "validation_size": len(val_dataset),
-        "test_size": len(test_dataset)
+        # "test_size": len(test_dataset)
         })
 
     optimal_model(model = model,
                   train_loader = train_loader,
                   val_loader = val_loader,
-                  test_loader = test_loader,
+                #   test_loader = test_loader,
                   num_epochs = num_epochs,
                   patience = patience,
                   device = device,
