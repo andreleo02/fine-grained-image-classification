@@ -43,7 +43,7 @@ if __name__ == "__main__":
     main(args = args,
          model = model,
          dataset_function = Flowers102,
-         dataset_name = "Flowers102",
+         dataset_name = "CUB_200_2011",
          num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
