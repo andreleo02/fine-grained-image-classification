@@ -10,7 +10,11 @@ training:
   frozen_layers: 0
   optimizer:
     momentum: 0.9
+<<<<<<< HEAD
     weight_decay: 0.1
+=======
+    weight_decay: 0.01
+>>>>>>> 19dd13079bff1b55cf0d698b60ec88df225cc6f0
 
 data:
   batch_size: 32
