@@ -14,7 +14,7 @@ training:
 
 data:
   batch_size: 32
-  num_classes: 102
+  num_classes: 100
   pytorch: True
   custom: False
  #download_url: https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz
