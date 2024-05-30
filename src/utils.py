@@ -214,7 +214,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         "gamma": gamma,
         "train_size": len(train_dataset),
         "validation_size": len(val_dataset),
-        "test_size": len(test_dataset)
+        # "test_size": len(test_dataset)
         })
 
     optimal_model(model = model,
