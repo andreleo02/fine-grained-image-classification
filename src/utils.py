@@ -179,7 +179,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     val_ratio = 0.1
 
     if config["data"]["pytorch"]:
-        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
+        train_dataset, val_dataset = get_data(dataset_function = dataset_function,
                                               train_transforms = train_transforms,
                                               test_transforms = test_transforms)
     elif config["data"]["custom"]:
@@ -240,10 +240,10 @@ def calc_accuracy(y_true, y_pred):
 def get_data(dataset_function, train_transforms, test_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-    val_dataset = dataset_function(root = dataset_path, split = "val", transform = test_transforms, download = True)
-    test_dataset = dataset_function(root = dataset_path, split = "test", transform = test_transforms, download = True)
+    # val_dataset = dataset_function(root = dataset_path, split = "val", transform = test_transforms, download = True)
+    val_dataset = dataset_function(root = dataset_path, split = "test", transform = test_transforms, download = True)
 
-    return train_dataset, val_dataset, test_dataset
+    return train_dataset, val_dataset
 
 def get_data_custom(dataset_name, download_url: str, num_classes, train_transforms, test_transforms):
     data_dir = os.path.join("../../data", dataset_name)

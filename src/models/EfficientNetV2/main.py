@@ -1,7 +1,7 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
 from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights
-from torchvision.datasets import FGVCAircraft, Flowers102
+from torchvision.datasets import FGVCAircraft, Flowers102, Food101
 import torch.optim as optim
 import torch
 
@@ -42,8 +42,8 @@ if __name__ == "__main__":
 
     main(args = args,
          model = model,
-         dataset_function = Flowers102,
-         dataset_name = "CUB_200_2011",
+         dataset_function = Food101,
+         dataset_name = "Food101",
          num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
