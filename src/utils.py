@@ -37,7 +37,8 @@ def optimal_model(model,
                   checkpoint_path,
                   optimizer,
                   criterion,
-                  scheduler):
+                  scheduler,
+                  wandb_enabled: bool):
     start_time = time.time()
 
     best_val_loss = float('inf')
@@ -58,12 +59,13 @@ def optimal_model(model,
         print(f"\nTraining loss: {train_loss:.3}, Training accuracy: {train_acc:.3}")
         print(f"Validation loss: {val_loss:.3}, Validation accuracy: {val_acc:.3}")
 
-        wandb.log({
-            "train/loss":train_loss,
-            "train/accuracy":train_acc,
-            "val/loss":val_loss,
-            "val/accuracy":val_acc
-        })
+        if wandb_enabled:
+            wandb.log({
+                "train/loss":train_loss,
+                "train/accuracy":train_acc,
+                "val/loss":val_loss,
+                "val/accuracy":val_acc
+            })
 
         torch.save(model.state_dict(), checkpoint_path / f'epoch-{epoch}.pth')
 
@@ -140,8 +142,6 @@ def test_model(model, test_loader: DataLoader, device):
 
 
 def main(args, model, dataset_function, num_classes, dataset_name, criterion, optimizer, scheduler, device, config):
-    wandb.login()
-
     torch.manual_seed(1234)
 
     net = config["net"]
@@ -177,12 +177,8 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
 
     train_ratio = 0.9
     val_ratio = 0.1
-
-    if config["data"]["pytorch"]:
-        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
-                                              train_transforms = train_transforms,
-                                              test_transforms = test_transforms)
-    elif config["data"]["custom"]:
+        
+    if config["data"]["custom"]:
         download_url = config["data"]["download_url"]
         train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
                                                      download_url = download_url,
@@ -192,30 +188,36 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
         # num_train = int(len(train_dataset) * train_ratio)
         # num_val = len(train_dataset) - num_train
         # train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
+    else:
+        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
+                                              train_transforms = train_transforms,
+                                              test_transforms = test_transforms)
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
     # test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
 
-    wandb.init(
-        project = "Competition",
-        name = f"{args.run_name}",
-        config = {
-        "learning_rate": learning_rate,
-        "architecture": net,
-        "dataset": dataset_name,
-        "num_classes": num_classes,
-        "epochs": num_epochs,
-        "batch_size": batch_size,
-        "frozen_layers": frozen_layers,
-        "momentum": momentum,
-        "weight_decay": weight_decay,
-        "step_size": step_size,
-        "gamma": gamma,
-        "train_size": len(train_dataset),
-        "validation_size": len(val_dataset),
-        # "test_size": len(test_dataset)
-        })
+    if config["wandb"]:
+        wandb.login()
+        wandb.init(
+            project = "Competition",
+            name = f"{args.run_name}",
+            config = {
+            "learning_rate": learning_rate,
+            "architecture": net,
+            "dataset": dataset_name,
+            "num_classes": num_classes,
+            "epochs": num_epochs,
+            "batch_size": batch_size,
+            "frozen_layers": frozen_layers,
+            "momentum": momentum,
+            "weight_decay": weight_decay,
+            "step_size": step_size,
+            "gamma": gamma,
+            "train_size": len(train_dataset),
+            "validation_size": len(val_dataset),
+            # "test_size": len(test_dataset)
+            })
 
     optimal_model(model = model,
                   train_loader = train_loader,
@@ -227,7 +229,8 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
                   checkpoint_path = checkpoint_path,
                   criterion = criterion,
                   optimizer = optimizer,
-                  scheduler = scheduler)
+                  scheduler = scheduler,
+                  wandb_enabled = config["wandb"])
     
     # test_model(model, test_loader, device = device)
 

@@ -54,6 +54,8 @@ if __name__ == "__main__":
     weight_decay = config["training"]["optimizer"]["weight_decay"]
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
+    dataset_name = config["data"]["dataset_name"]
+
 
     # Modify the fully connected layer to match ResNet34's classifier input size
     model.fc = nn.Linear(model.fc.in_features, num_classes)
@@ -70,7 +72,7 @@ if __name__ == "__main__":
     main(args=args,
          model=model,
          dataset_function=FGVCAircraft,
-         dataset_name="CUB_200_2011",
+         dataset_name=dataset_name,
          num_classes=num_classes,
          criterion=criterion,
          optimizer=optimizer,

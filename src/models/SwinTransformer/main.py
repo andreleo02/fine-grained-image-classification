@@ -29,6 +29,8 @@ if __name__ == "__main__":
     step_size = config["training"]["scheduler"]["step_size"]
     gamma = config["training"]["scheduler"]["gamma"]
     num_classes = config["data"]["num_classes"]
+    dataset_name = config["data"]["dataset_name"]
+
 
     model.head = nn.Linear(model.head.in_features, num_classes)
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
@@ -43,7 +45,7 @@ if __name__ == "__main__":
     main(args = args,
          model = model,
          dataset_function = FGVCAircraft,
-         dataset_name = "CUB_200_2011",
+         dataset_name = dataset_name,
          num_classes = num_classes,
          criterion = criterion,
          optimizer = optimizer,
