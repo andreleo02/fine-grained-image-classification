@@ -1,11 +1,14 @@
+
 import os, requests, zipfile, tarfile, shutil
 import wandb
 import torch
+import time
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
-from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
+from sklearn.model_selection import train_test_split
+from torch.utils.data import DataLoader, random_split
 from pathlib import Path
 from torch import DeviceObjType
 from torch.utils.data import DataLoader
@@ -22,11 +25,12 @@ def freeze_layers(model, num_blocks_to_freeze):
                 param.requires_grad = False
             layers_frozen += 1
         else:
-            break
+            break   
 
 def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
+                  test_loader: DataLoader,
                   num_epochs: int,
                   patience: int,
                   device: DeviceObjType,
@@ -34,6 +38,7 @@ def optimal_model(model,
                   optimizer,
                   criterion,
                   scheduler):
+    start_time = time.time()
 
     best_val_loss = float('inf')
     epochs_no_improve = 0
@@ -71,6 +76,14 @@ def optimal_model(model,
             if epochs_no_improve == patience:
                 print(f"Validation loss did not imporove for {patience} epochs. Killing the training...")
                 break
+    end_time = time.time()
+    model.load_state_dict(torch.load(checkpoint_path / f'best.pth'))
+    # test_accuracy = test_model(model = model, test_loader = test_loader, device = device)
+    # wandb.log({
+    #     "training_time": f"{(end_time - start_time):.3} seconds",
+    #     "test_accuracy": test_accuracy
+    # })
+
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):
     print("Training phase ...")
@@ -123,27 +136,8 @@ def test_model(model, test_loader: DataLoader, device):
             test_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
     test_accuracy /= len(test_loader)
 
-    print(f"Test accuracy: {test_accuracy}")
+    return test_accuracy
 
-
-def compute_mean_std(dataset,device):
-    loader = DataLoader(dataset, batch_size=64, shuffle=False, num_workers=4)
-    mean = 0.0
-    std = 0.0
-    total_images_count = 0
-    
-    for images, _ in loader:
-        images = images.to(device)
-        batch_samples = images.size(0)  # batch size (the last batch can have smaller size)
-        images = images.view(batch_samples, images.size(1), -1)
-        mean += images.mean(2).sum(0)
-        std += images.std(2).sum(0)
-        total_images_count += batch_samples
-    
-    mean /= total_images_count
-    std /= total_images_count
-    
-    return mean, std
 
 def main(args, model, dataset_function, num_classes, dataset_name, criterion, optimizer, scheduler, device, config):
     wandb.login()
@@ -161,93 +155,81 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     gamma = config["training"]["scheduler"]["gamma"]
     batch_size = config["data"]["batch_size"]
 
-    wandb.init(
-        project="Competition",
-        name=f"{args.run_name}",
-        config={
-            "learning_rate": learning_rate,
-            "architecture": net,
-            "dataset": dataset_name,
-            "num_classes": num_classes,
-            "epochs": num_epochs,
-            "batch_size": batch_size,
-            "frozen_layers": frozen_layers,
-            "momentum": momentum,
-            "weight_decay": weight_decay,
-            "step_size": step_size,
-            "gamma": gamma
-        })
-
     checkpoint_path = Path("./checkpoint")
     checkpoint_path = checkpoint_path / args.run_name
-    checkpoint_path.mkdir(exist_ok=True, parents=True)
+    checkpoint_path.mkdir(exist_ok = True, parents = True)
 
-    # Preliminary transforms for computing mean and std
-    prelim_transforms = transforms.Compose([
-        transforms.RandomResizedCrop(size=(224, 224), antialias=True),
-        transforms.RandomHorizontalFlip(p=0.5),
-        transforms.ToTensor()
-    ])
-    
-    if config["data"]["pytorch"]:
-        train_dataset, val_dataset = get_data(dataset_function=dataset_function,
-                                              train_transforms=prelim_transforms,
-                                              val_transforms=prelim_transforms)
-    elif config["data"]["custom"]:
-        download_url = config["data"]["download_url"]
-        train_dataset, val_dataset = get_data_custom(dataset_name=dataset_name,
-                                                     download_url=download_url,
-                                                     num_classes=num_classes,
-                                                     train_transforms=prelim_transforms,
-                                                     val_transforms=prelim_transforms)
-    
-    # Compute mean and std
-    mean, std = compute_mean_std(train_dataset,device)
-    
     train_transforms = transforms.Compose([
-        transforms.RandomResizedCrop(size=(224, 224), antialias=True),
-        transforms.RandomHorizontalFlip(p=0.5),
+        transforms.RandomResizedCrop(size = (224, 224), antialias = True),
+        transforms.RandomHorizontalFlip(p = 0.5),
+        # transforms.RandomRotation(degrees = 180),
+        # transforms.RandomAutocontrast(p = 0.1),
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean.tolist(), std=std.tolist()),
+        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
 
-    val_transforms = transforms.Compose([
+    test_transforms = transforms.Compose([
         transforms.Resize(256),
         transforms.CenterCrop(224),
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean.tolist(), std=std.tolist()),
+        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
 
+    train_ratio = 0.9
+    val_ratio = 0.1
+
     if config["data"]["pytorch"]:
-        train_dataset, val_dataset = get_data(dataset_function=dataset_function,
-                                              train_transforms=train_transforms,
-                                              val_transforms=val_transforms)
+        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
+                                              train_transforms = train_transforms,
+                                              test_transforms = test_transforms)
     elif config["data"]["custom"]:
         download_url = config["data"]["download_url"]
-        train_dataset, val_dataset = get_data_custom(dataset_name=dataset_name,
-                                                     download_url=download_url,
-                                                     num_classes=num_classes,
-                                                     train_transforms=train_transforms,
-                                                     val_transforms=val_transforms)
+        train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
+                                                     download_url = download_url,
+                                                     num_classes = num_classes,
+                                                     train_transforms = train_transforms,
+                                                     test_transforms = test_transforms)
+        # num_train = int(len(train_dataset) * train_ratio)
+        # num_val = len(train_dataset) - num_train
+        # train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
     
-    train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=4, shuffle=True)
-    val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=4, shuffle=False)
-    # test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
+    val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
+    test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
 
-    optimal_model(model=model,
-                  train_loader=train_loader,
-                  val_loader=val_loader,
-                  num_epochs=num_epochs,
-                  patience=patience,
-                  device=device,
-                  checkpoint_path=checkpoint_path,
-                  criterion=criterion,
-                  optimizer=optimizer,
-                  scheduler=scheduler)
+    wandb.init(
+        project = "Competition",
+        name = f"{args.run_name}",
+        config = {
+        "learning_rate": learning_rate,
+        "architecture": net,
+        "dataset": dataset_name,
+        "num_classes": num_classes,
+        "epochs": num_epochs,
+        "batch_size": batch_size,
+        "frozen_layers": frozen_layers,
+        "momentum": momentum,
+        "weight_decay": weight_decay,
+        "step_size": step_size,
+        "gamma": gamma,
+        "train_size": len(train_dataset),
+        "validation_size": len(val_dataset),
+        "test_size": len(test_dataset)
+        })
+
+    optimal_model(model = model,
+                  train_loader = train_loader,
+                  val_loader = val_loader,
+                  test_loader = test_loader,
+                  num_epochs = num_epochs,
+                  patience = patience,
+                  device = device,
+                  checkpoint_path = checkpoint_path,
+                  criterion = criterion,
+                  optimizer = optimizer,
+                  scheduler = scheduler)
     
-    # test_model(model, test_loader, device=device)
-
-
+    # test_model(model, test_loader, device = device)
 
 def calc_accuracy(y_true, y_pred):
     correct = torch.eq(y_true, y_pred).sum().item()
@@ -255,26 +237,27 @@ def calc_accuracy(y_true, y_pred):
     print(f"Correct predictions: {correct} / {len(y_pred)}")
     return acc
 
-def get_data(dataset_function, train_transforms, val_transforms):
+def get_data(dataset_function, train_transforms, test_transforms):
     dataset_path = "../../data/"
     train_dataset = dataset_function(root = dataset_path, split = "train", transform = train_transforms, download = True)
-    val_dataset = dataset_function(root = dataset_path, split = "val", transform = val_transforms, download = True)
-    # train_dataset = dataset_function(root = dataset_path, train = True, transform = train_transforms, download = True)
-    # val_dataset = dataset_function(root = dataset_path, train = False, transform = val_transforms, download = True)
-    # test_dataset = dataset_function(root = dataset_path, split = "test", transform = transform, download = True)
+    val_dataset = dataset_function(root = dataset_path, split = "val", transform = test_transforms, download = True)
+    test_dataset = dataset_function(root = dataset_path, split = "test", transform = test_transforms, download = True)
 
-    return train_dataset, val_dataset
+    return train_dataset, val_dataset, test_dataset
 
-def get_data_custom(dataset_name, download_url, num_classes, train_transforms, val_transforms):
+def get_data_custom(dataset_name, download_url: str, num_classes, train_transforms, test_transforms):
     data_dir = os.path.join("../../data", dataset_name)
     if os.path.isdir(data_dir):
         print(f"Dataset {dataset_name} already exists at path {data_dir}. Not downloading")
     else:
-        download_dataset_tgz(url = download_url)
+        if download_url.endswith(".tgz"):
+            download_dataset_tgz(url = download_url)
+        else:
+            download_dataset_zip(url = download_url)
 
     images_dir = os.path.join(data_dir, 'images')
     train_dir = os.path.join(data_dir, 'train')
-    val_dir = os.path.join(data_dir, 'val')
+    test_dir = os.path.join(data_dir, 'test')
 
     with open(os.path.join(data_dir, 'images.txt')) as f:
         images = [line.strip().split() for line in f.readlines()]
@@ -286,11 +269,11 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
         train_test_split_dataset = [line.strip().split() for line in f.readlines()]
 
     os.makedirs(train_dir, exist_ok = True)
-    os.makedirs(val_dir, exist_ok = True)
+    os.makedirs(test_dir, exist_ok = True)
 
     for i in range(1, num_classes):
         os.makedirs(os.path.join(train_dir, str(i)), exist_ok = True)
-        os.makedirs(os.path.join(val_dir, str(i)), exist_ok = True)
+        os.makedirs(os.path.join(test_dir, str(i)), exist_ok = True)
 
     file_paths = [os.path.join(images_dir, img[1]) for img in images]
     labels = [int(label[1]) for label in labels]
@@ -298,7 +281,7 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
 
     data = list(zip(file_paths, labels, train_test_split_dataset))
 
-    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.5, stratify = [item[1] for item in data if item[2] == 1])
+    train_data, test_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.2, stratify = [item[1] for item in data if item[2] == 1])
 
     def copy_files(data, target_dir):
         for file_path, label, _ in data:
@@ -306,12 +289,12 @@ def get_data_custom(dataset_name, download_url, num_classes, train_transforms, v
             shutil.copy(file_path, target_class_dir)
 
     copy_files(train_data, train_dir)
-    copy_files(val_data, val_dir)
+    copy_files(test_data, test_dir)
 
     train_dataset = datasets.ImageFolder(train_dir, transform = train_transforms)
-    val_dataset = datasets.ImageFolder(val_dir, transform = val_transforms)
+    test_dataset = datasets.ImageFolder(test_dir, transform = test_transforms)
 
-    return train_dataset, val_dataset
+    return train_dataset, test_dataset
 
 def download_dataset_zip(url: str, output_dir: str = "../../data") -> None:
     response = requests.get(url)
