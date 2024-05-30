@@ -61,15 +61,16 @@ To choose a dataset from `torchvision`, set the `custom` field to `False`. The d
 
 Follow these steps:
 
-1. Select one of the pre-trained models present in [pytorch](https://pytorch.org/vision/stable/models.html#classification).
+1. Select one of the pre-trained models present in [pytorch](https://pytorch.org/vision/stable/models.html#classification) or create your own.
 2. Create a folder for the model in the `models` folder.
 3. Inside the new folder, create three files: `config.yml`, `main.py` and `README.md` (to clarify what the model does).
 4. If needed, create a custom function to freeze some layers based on the model.
-5. Specify the run parameters in the `config.yml` file as preferred:
+5. Define the proper _loss function_, _optimizer_ and _scheduler_.
+6. Specify the run parameters in the `config.yml` file as preferred:
    - in the `data` section it can be chosen to download a dataset that is not available directly from `torchvision`
    - the parameter `wandb` can be set to `False` to avoid keeping track of the results on the wandb personal profile
-6. Call the main function with the required parameters (there is an example in the `SwinTransformer` folder).
-7. From the terminal, move to the folder of the model and run the following command
+7. Call the main function with the required parameters (there is an example in the `SwinTransformer` folder).
+8. From the terminal, move to the folder of the model and run the following command
 
 ```
 python main.py --config ./config.yml --run_name <run_name>
