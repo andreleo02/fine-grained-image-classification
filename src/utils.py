@@ -257,7 +257,7 @@ def get_data_custom(dataset_name, download_url: str, num_classes, train_transfor
 
     images_dir = os.path.join(data_dir, 'images')
     train_dir = os.path.join(data_dir, 'train')
-    test_dir = os.path.join(data_dir, 'test')
+    val_dir = os.path.join(data_dir, 'val')
 
     with open(os.path.join(data_dir, 'images.txt')) as f:
         images = [line.strip().split() for line in f.readlines()]
@@ -269,11 +269,11 @@ def get_data_custom(dataset_name, download_url: str, num_classes, train_transfor
         train_test_split_dataset = [line.strip().split() for line in f.readlines()]
 
     os.makedirs(train_dir, exist_ok = True)
-    os.makedirs(test_dir, exist_ok = True)
+    os.makedirs(val_dir, exist_ok = True)
 
     for i in range(1, num_classes):
         os.makedirs(os.path.join(train_dir, str(i)), exist_ok = True)
-        os.makedirs(os.path.join(test_dir, str(i)), exist_ok = True)
+        os.makedirs(os.path.join(val_dir, str(i)), exist_ok = True)
 
     file_paths = [os.path.join(images_dir, img[1]) for img in images]
     labels = [int(label[1]) for label in labels]
@@ -281,7 +281,7 @@ def get_data_custom(dataset_name, download_url: str, num_classes, train_transfor
 
     data = list(zip(file_paths, labels, train_test_split_dataset))
 
-    train_data, test_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.2, stratify = [item[1] for item in data if item[2] == 1])
+    train_data, val_data = train_test_split([item for item in data if item[2] == 1], test_size = 0.2, stratify = [item[1] for item in data if item[2] == 1])
 
     def copy_files(data, target_dir):
         for file_path, label, _ in data:
@@ -289,12 +289,12 @@ def get_data_custom(dataset_name, download_url: str, num_classes, train_transfor
             shutil.copy(file_path, target_class_dir)
 
     copy_files(train_data, train_dir)
-    copy_files(test_data, test_dir)
+    copy_files(val_data, val_dir)
 
     train_dataset = datasets.ImageFolder(train_dir, transform = train_transforms)
-    test_dataset = datasets.ImageFolder(test_dir, transform = test_transforms)
+    val_dataset = datasets.ImageFolder(val_dir, transform = test_transforms)
 
-    return train_dataset, test_dataset
+    return train_dataset, val_dataset
 
 def download_dataset_zip(url: str, output_dir: str = "../../data") -> None:
     response = requests.get(url)
