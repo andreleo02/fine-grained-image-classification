@@ -1,6 +1,6 @@
 import argparse, sys, os, yaml
 import torch.nn as nn
-from torchvision.models import efficientnet_v2_m, EfficientNet_V2_M_Weights
+from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights
 from torchvision.datasets import FGVCAircraft, Flowers102
 import torch.optim as optim
 import torch
@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    model = load_model(efficientnet_v2_m, weights = EfficientNet_V2_M_Weights.IMAGENET1K_V1)
+    model = load_model(efficientnet_v2_s, weights = EfficientNet_V2_S_Weights.IMAGENET1K_V1)
 
     with open(args.config, "r") as f:
         config = yaml.safe_load(f)
