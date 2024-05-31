@@ -26,7 +26,7 @@ def get_label_ids(train_dir):
     classes = sorted(os.listdir(train_dir))
     for class_name in classes:
         if os.path.isdir(os.path.join(train_dir, class_name)):
-            class_id = class_name.split('.')[0]
+            class_id = class_name.split('_')[0]
             label_ids.append(class_id)
     return label_ids
 
@@ -56,9 +56,9 @@ train_dataset, val_dataset = random_split(train_data, [num_train, num_val])
 
 test_dataset = TestDataset(test_dir, transform = test_transforms)
 
-train_loader = DataLoader(train_data, batch_size = 1, shuffle = True)
-val_loader = DataLoader(val_dataset, batch_size = 1, shuffle = False)
-test_loader = DataLoader(test_dataset, batch_size = 1, shuffle = False)
+train_loader = DataLoader(train_data, batch_size = 10, shuffle = True)
+val_loader = DataLoader(val_dataset, batch_size = 10, shuffle = False)
+test_loader = DataLoader(test_dataset, batch_size = 10, shuffle = False)
 
 
 for images, labels in train_loader:
