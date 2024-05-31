@@ -3,7 +3,7 @@ net: EfficientNetV2
 wandb: True
 
 training:
-  num_epochs: 50
+  num_epochs: 10
   patience: 5
   lr: 0.01
   scheduler:
@@ -16,7 +16,7 @@ training:
 
 data:
   batch_size: 32
-  dataset_name: CUB_200_2011
-  num_classes: 200
+  dataset_name: competition_data
+  num_classes: 100
   custom: True
   download_url: https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz
