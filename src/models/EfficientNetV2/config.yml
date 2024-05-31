@@ -3,16 +3,16 @@ net: EfficientNetV2
 wandb: True
 
 training:
-  num_epochs: 10
+  num_epochs: 20
   patience: 5
-  lr: 0.02
+  lr: 0.01
   scheduler:
-    step_size: 5
+    step_size: 7
     gamma: 0.1
   frozen_layers: 2
   optimizer:
     momentum: 0.9
-    weight_decay: 0.001
+    weight_decay: 0.0005
 
 data:
   batch_size: 32
