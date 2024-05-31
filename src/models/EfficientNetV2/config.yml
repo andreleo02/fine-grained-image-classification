@@ -5,17 +5,17 @@ wandb: True
 training:
   num_epochs: 20
   patience: 3
-  lr: 0.005
+  lr: 0.0005
   scheduler:
     step_size: 10
     gamma: 0.1
   frozen_layers: 2
   optimizer:
     momentum: 0.9
-    weight_decay: 0.0001
+    weight_decay: 0.00001
 
 data:
-  batch_size: 16
+  batch_size: 8
   dataset_name: competition_data
   num_classes: 100
   custom: True
