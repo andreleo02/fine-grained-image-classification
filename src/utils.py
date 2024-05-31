@@ -217,7 +217,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     #                                           train_transforms = train_transforms,
     #                                           test_transforms = test_transforms)
     train_dir = "../../data/competition_data/train"
-    test_dir = ".../../data/competition_data/test"
+    test_dir = "../../data/competition_data/test"
     label_ids = get_label_ids(train_dir = train_dir)
 
     train_data = datasets.ImageFolder(root = train_dir, transform = train_transforms)
