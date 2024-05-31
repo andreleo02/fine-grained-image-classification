@@ -1,10 +1,17 @@
 
-import os, requests, zipfile, tarfile, shutil
+import os, requests, zipfile, tarfile, shutil, json
 import wandb
 import torch
 import time
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
+
+import os
+import torchvision.datasets as datasets
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader
+from torch.utils.data import Dataset, DataLoader, random_split
+from PIL import Image
 
 from torch.utils.data import DataLoader
 from sklearn.model_selection import train_test_split
@@ -30,7 +37,7 @@ def freeze_layers(model, num_blocks_to_freeze):
 def optimal_model(model,
                   train_loader: DataLoader,
                   val_loader: DataLoader,
-                #   test_loader: DataLoader,
+                  test_loader: DataLoader,
                   num_epochs: int,
                   patience: int,
                   device: DeviceObjType,
@@ -38,7 +45,9 @@ def optimal_model(model,
                   optimizer,
                   criterion,
                   scheduler,
-                  wandb_enabled: bool):
+                  wandb_enabled: bool,
+                  label_ids,
+                  net):
     start_time = time.time()
 
     best_val_loss = float('inf')
@@ -85,13 +94,22 @@ def optimal_model(model,
     #     "training_time": f"{(end_time - start_time):.3} seconds",
     #     "test_accuracy": test_accuracy
     # })
-    preds = test_model(model = model, test_loader = test_loader, device = device, labels = labels)
+    preds = test_model(model = model, test_loader = test_loader, device = device, label_ids = label_ids)
     res = {
         "images": preds,
-        "groupname": "Deep Dream Team"
+        "groupname": f"Deep Dream Team - {net}"
     }
     print(res)
-    # submit(results = res)
+    submit(results = res)
+
+def submit(results, url = "https://competition-production.up.railway.app/results/"):
+    res = json.dumps(results)
+    response = requests.post(url, res)
+    try:
+        result = json.loads(response.text)
+        print(f"accuracy is {result['accuracy']}")
+    except json.JSONDecodeError:
+        print(f"ERROR: {response.text}")
 
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):
@@ -134,18 +152,19 @@ def validate_model(model, val_loader: DataLoader, criterion, device):
     val_accuracy /= len(val_loader)
     return val_loss, val_accuracy
 
-def test_model(model, test_loader: DataLoader, device):
+def test_model(model, test_loader: DataLoader, device, label_ids):
     model.eval()
     model.to(device)
-    test_accuracy = 0
+    preds = {}
     with torch.no_grad():
-        for images, labels in test_loader:
-            images, labels = images.to(device), labels.to(device)
+        for images, image_file_names in test_loader:
+            images = images.to(device)
             outputs = model(images)
-            test_accuracy += calc_accuracy(labels, outputs.argmax(dim = 1))
-    test_accuracy /= len(test_loader)
+            outputs = outputs.argmax(dim = 1)
+            for i in range(len(images)):
+                preds[image_file_names[i]] = label_ids[outputs[i]]
 
-    return test_accuracy
+    return preds
 
 
 def main(args, model, dataset_function, num_classes, dataset_name, criterion, optimizer, scheduler, device, config):
@@ -169,8 +188,6 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     train_transforms = transforms.Compose([
         transforms.RandomResizedCrop(size = (224, 224), antialias = True),
         transforms.RandomHorizontalFlip(p = 0.5),
-        # transforms.RandomRotation(degrees = 180),
-        # transforms.RandomAutocontrast(p = 0.1),
         transforms.ToTensor(),
         transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
     ])
@@ -185,24 +202,33 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     train_ratio = 0.9
     val_ratio = 0.1
         
-    if config["data"]["custom"]:
-        download_url = config["data"]["download_url"]
-        train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
-                                                     download_url = download_url,
-                                                     num_classes = num_classes,
-                                                     train_transforms = train_transforms,
-                                                     test_transforms = test_transforms)
-        # num_train = int(len(train_dataset) * train_ratio)
-        # num_val = len(train_dataset) - num_train
-        # train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
-    else:
-        train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
-                                              train_transforms = train_transforms,
-                                              test_transforms = test_transforms)
+    # if config["data"]["custom"]:
+    #     download_url = config["data"]["download_url"]
+    #     train_dataset, val_dataset = get_data_custom(dataset_name = dataset_name,
+    #                                                  download_url = download_url,
+    #                                                  num_classes = num_classes,
+    #                                                  train_transforms = train_transforms,
+    #                                                  test_transforms = test_transforms)
+    #     # num_train = int(len(train_dataset) * train_ratio)
+    #     # num_val = len(train_dataset) - num_train
+    #     # train_dataset, val_dataset = random_split(train_dataset, [num_train, num_val])
+    # else:
+    #     train_dataset, val_dataset, test_dataset = get_data(dataset_function = dataset_function,
+    #                                           train_transforms = train_transforms,
+    #                                           test_transforms = test_transforms)
+    train_dir = "../../data/competition_data/train"
+    test_dir = ".../../data/competition_data/test"
+    label_ids = get_label_ids(train_dir = train_dir)
+
+    train_data = datasets.ImageFolder(root = train_dir, transform = train_transforms)
+    num_train = int(len(train_data) * 0.8)
+    num_val = len(train_data) - num_train
+    train_dataset, val_dataset = random_split(train_data, [num_train, num_val])
+    test_dataset = TestDataset(test_dir, transform = test_transforms)
     
     train_loader = DataLoader(train_dataset, batch_size = batch_size, num_workers = 4, shuffle = True)
     val_loader = DataLoader(val_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
-    # test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
+    test_loader = DataLoader(test_dataset, batch_size = batch_size, num_workers = 4, shuffle = False)
 
     if config["wandb"]:
         wandb.login()
@@ -229,7 +255,7 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
     optimal_model(model = model,
                   train_loader = train_loader,
                   val_loader = val_loader,
-                #   test_loader = test_loader,
+                  test_loader = test_loader,
                   num_epochs = num_epochs,
                   patience = patience,
                   device = device,
@@ -237,9 +263,35 @@ def main(args, model, dataset_function, num_classes, dataset_name, criterion, op
                   criterion = criterion,
                   optimizer = optimizer,
                   scheduler = scheduler,
-                  wandb_enabled = config["wandb"])
+                  wandb_enabled = config["wandb"],
+                  label_ids = label_ids,
+                  net = net)
     
     # test_model(model, test_loader, device = device)
+def get_label_ids(train_dir):
+    label_ids = []
+    classes = sorted(os.listdir(train_dir))
+    for class_name in classes:
+        if os.path.isdir(os.path.join(train_dir, class_name)):
+            class_id = class_name.split('_')[0]
+            label_ids.append(class_id)
+    return label_ids
+
+class TestDataset(Dataset):
+    def __init__(self, test_dir, transform=None):
+        self.test_dir = test_dir
+        self.image_files = [f for f in os.listdir(test_dir) if os.path.isfile(os.path.join(test_dir, f))]
+        self.transform = transform
+
+    def __len__(self):
+        return len(self.image_files)
+
+    def __getitem__(self, idx):
+        img_name = os.path.join(self.test_dir, self.image_files[idx])
+        image = Image.open(img_name)
+        if self.transform:
+            image = self.transform(image)
+        return image, self.image_files[idx]
 
 def calc_accuracy(y_true, y_pred):
     correct = torch.eq(y_true, y_pred).sum().item()
