@@ -85,6 +85,13 @@ def optimal_model(model,
     #     "training_time": f"{(end_time - start_time):.3} seconds",
     #     "test_accuracy": test_accuracy
     # })
+    preds = test_model(model = model, test_loader = test_loader, device = device, labels = labels)
+    res = {
+        "images": preds,
+        "groupname": "Deep Dream Team"
+    }
+    print(res)
+    # submit(results = res)
 
 
 def train_model(model, train_loader: DataLoader, optimizer, criterion, scheduler, device):

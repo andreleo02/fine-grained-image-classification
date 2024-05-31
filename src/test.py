@@ -1,6 +1,3 @@
-# from utils import download_dataset_tgz
-
-# download_dataset_tgz(url = "https://data.caltech.edu/records/65de6-vp158/files/CUB_200_2011.tgz", output_dir = "./data/cub")
 import os
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
@@ -24,7 +21,6 @@ test_transforms = transforms.Compose([
     ])
 
 
-# Function to get label IDs from the training dataset
 def get_label_ids(train_dir):
     label_ids = []
     classes = sorted(os.listdir(train_dir))
@@ -33,6 +29,7 @@ def get_label_ids(train_dir):
             class_id = class_name.split('.')[0]
             label_ids.append(class_id)
     return label_ids
+
 class TestDataset(Dataset):
     def __init__(self, test_dir, transform=None):
         self.test_dir = test_dir
