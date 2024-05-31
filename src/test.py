@@ -26,7 +26,7 @@ def get_label_ids(train_dir):
     classes = sorted(os.listdir(train_dir))
     for class_name in classes:
         if os.path.isdir(os.path.join(train_dir, class_name)):
-            class_id = class_name.split('.')[0]
+            class_id = class_name.split('_')[0]
             label_ids.append(class_id)
     return label_ids
 
