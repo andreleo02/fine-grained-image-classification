@@ -5,7 +5,7 @@ wandb: True
 training:
   num_epochs: 50
   patience: 5
-  lr: 0.01
+  lr: 0.05
   scheduler:
     step_size: 10
     gamma: 0.1
