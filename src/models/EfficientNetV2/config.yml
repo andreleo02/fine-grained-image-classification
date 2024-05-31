@@ -15,7 +15,7 @@ training:
     weight_decay: 0.0001
 
 data:
-  batch_size: 32
+  batch_size: 16
   dataset_name: competition_data
   num_classes: 100
   custom: True
