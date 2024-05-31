@@ -97,7 +97,7 @@ def optimal_model(model,
     preds = test_model(model = model, test_loader = test_loader, device = device, label_ids = label_ids)
     res = {
         "images": preds,
-        "groupname": f"Deep Dream Team - {net}"
+        "groupname": "Deep Dream Team"
     }
     print(res)
     submit(results = res)
