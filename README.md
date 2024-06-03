@@ -18,10 +18,10 @@ This project aims to conduct an exploratory analysis of fine-grained image class
 
 To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks and two belonging to the family of transformers, for comparative purposes:
 
-- **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/7964a7d63d8beab4f713f7030f3412d59899445c/src/models/EfficientNetV2)**
-- **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/ResNEt34)**
-- **[SwinTransformer](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/SwinTransformer)**
-- **[ViT-16](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/ViT-16)**
+- **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/EfficientNetV2)**
+- **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ResNEt34)**
+- **[SwinTransformer](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/SwinTransformer)**
+- **[ViT-16](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ViT-16)**
 
 If something is missing in this guide, please feel free to open an issue on this repo.
 
@@ -32,8 +32,6 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 - **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
 - **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)**
 - **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
-
-The results with the comment of the work can be found on the [paper]().
 
 ## Project structure
 
@@ -69,7 +67,12 @@ The results with the comment of the work can be found on the [paper]().
 
 ```
 
-## Steps to follow to reproduce our experiments
+## Results 
+During our experiments EfficientNet consistently demonstrated the best performance in terms of accuracy and loss across the different datasets. However, SwinT also showed promising results, indicating the potential of transformers for image classification. Both of these models demonstrate an optimal balance between complexity and efficiency. SwinT also exhibited the best performance in comparison to ViT16. By contrast, ResNet, despite being a deep and effective architecture, lead to poorer results compared to EfficientNet.
+
+More about the results with a more detailed comment of our work can be found on the [paper]().
+  
+## Repository guide
 
 1. **Clone the repository**
 
@@ -110,11 +113,15 @@ The results with the comment of the work can be found on the [paper]().
 
 The datasets can be manually downloaded and added to the `src/data` folder. This folder is however **ignored by git** and so it will only exists in the local environment.
 
-To keep the process of training the models as smooth as possible, some functions to download libraries directly from the code are defined in the `utils.py` file. Datasets can be downloaded from web (`.zip` and `.tgz`).
+## How to use different datasets
+
+### Custom datasets
+The datasets can be manually downloaded and added to the `src/data` folder. This folder is however **ignored by git** and so it will only exists in the local environment. To keep the process of training the models as smooth as possible, some functions to download libraries directly from the code are defined in the `utils.py` file. Datasets can be downloaded from web (`.zip` and `.tgz`).
 
 > [!TIP]
 > To enable the download of a custom dataset, in the `data` section of the `config.yml` file the field `custom` must be set to `True` and the url of the dataset must be specified in the `download_url` field. Specify also the `dataset_name` field with the name of the compressed download folder.
 
+### Torchvision datasets
 To choose a dataset from `torchvision`, set the `custom` field to `False`. The dataset function must be specified inside the `main.py` file of the model (see `SwinTransformer` model).
 
 ### Choosing a Dataset from `torchvision`
@@ -148,7 +155,8 @@ Follow these steps:
    - In the `data` section, choose to download a dataset not available directly from `torchvision`.
    - Set `wandb` parameter to `False` to avoid tracking results on the wandb personal profile.
 
-7. **Call the main function** with the required parameters (example available in the `SwinTransformer` folder).
+
+--- 
 
 ## Authors
 

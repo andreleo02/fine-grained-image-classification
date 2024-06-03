@@ -12,4 +12,8 @@ The advent of residual neural networks (ResNets) represented a significant devel
   <sub><em>Residual Block of a Residual Network (ResNet): the Residual Connection skips two layers.</em></sub>
 </p>
 
+This reformulation is implemented through the use of "skip connections," another innovation introduced by ResNets. These connections facilitate the flow of the gradient through the network during backpropagation, thereby preventing the vanishing gradient problem
+
+***Official paper [available](https://arxiv.org/pdf/1512.03385v1).***
+
 For further information please visit the official Pytorch [documentation](https://pytorch.org/hub/pytorch_vision_resnet/) about ResNet.
