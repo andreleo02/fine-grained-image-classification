@@ -33,10 +33,10 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 - **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
 
 
-The results with the comment of the work can be found on the [paper]().
-
 ## Results 
+During our experiments EfficientNet consistently demonstrated the best performance in terms of accuracy and loss across the different datasets. However, SwinT also showed promising results, indicating the potential of transformers for image classification. Both of these models demonstrate an optimal balance between complexity and efficiency. SwinT also exhibited the best performance in comparison to ViT16. By contrast, ResNet, despite being a deep and effective architecture, lead to poorer results compared to EfficientNet.
 
+More about the results with a more detailed comment of our work can be found on the [paper]().
   
 ## Repository guide
 
