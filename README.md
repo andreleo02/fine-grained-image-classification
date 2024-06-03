@@ -19,9 +19,9 @@ This paper presents an exploratory analysis of fine-grained image classification
 To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks  and two belonging to the family of transformers, for comparative purposes:
 
 - **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/7964a7d63d8beab4f713f7030f3412d59899445c/src/models/EfficientNetV2)**
-- **ResNEt34**
-- **SwinTransformer**
-- **ViT-16**
+- **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/ResNEt34)**
+- **[SwinTransformer](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/SwinTransformer)**
+- **[ViT-16](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/ViT-16)**
 
 If something is missing in this guide, please feel free to open an issue on this repo.
 
