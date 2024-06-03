@@ -11,7 +11,7 @@ This project aims to conduct an exploratory analysis of fine-grained image class
 </p>
 
 <p align="center">
-  <sub><em>Fine-grained classification vs. general image classification. Detailed description of the image.</em></sub>
+  <sub><em>Example of fine grained image classification from Yafei Wang and Zepeng Wang (2019),"A survey of recent work on fine-grained image classification techniques", .</em></sub>
 </p>
 
 
