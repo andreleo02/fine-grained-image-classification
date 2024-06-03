@@ -79,11 +79,12 @@ The datasets can be manually downloaded and added to the `src/data` folder. This
 > [!TIP]
 > To enable the download of a custom dataset, in the `data` section of the `config.yml` file the field `custom` must be set to `True` and the url of the dataset must be specified in the `download_url` field. Specify also the `dataset_name` field with the name of the compressed download folder.
 
+```
 deep-dream-team/
 ├── src/
 │   ├── data/
 │   │   └── (datasets go here - ignored by Git)
-
+```
 
 ### Torchvision datasets
 To choose a dataset from `torchvision`, set the `custom` field to `False`. The dataset function must be specified inside the `main.py` file of the model (see `SwinTransformer` model).
