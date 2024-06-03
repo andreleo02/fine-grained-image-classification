@@ -6,7 +6,7 @@ The Vision Transformer (ViT) architecture, introduced by Dosovitskiy et al., div
 <br>
 
 <p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/031f002da2bcf765f06f9bd4f48f8dcc7812f741/Vit.png?raw=true" width="512"/>  
+  <img src="./Vit.png" width="512"/>  
 </p>
 
 <p align="center">

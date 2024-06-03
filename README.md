@@ -14,9 +14,9 @@ This project aims to conduct an exploratory analysis of fine-grained image class
   <sub><em>Example of fine grained image classification on flowers: object present smaller differences between them and hace a high degree of similarity.</em></sub>
 </p>
 
+## Models
 
-## Models 
-To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks  and two belonging to the family of transformers, for comparative purposes:
+To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks and two belonging to the family of transformers, for comparative purposes:
 
 - **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/EfficientNetV2)**
 - **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ResNEt34)**
@@ -25,13 +25,47 @@ To conduct our experiments on fine-grained image classification, we have selecte
 
 If something is missing in this guide, please feel free to open an issue on this repo.
 
+## Experiments
 
-## Experiments 
-To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on three very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
+To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on four very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
+
 - **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
-- **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)** 
+- **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)**
 - **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
 
+## Project structure
+
+```
+┌─ fine grained image classification on flowers.png
+├─ README.md
+├─ requirements.txt
+├─ src/
+│  ├─ models/
+│  │  ├─ EfficientNetV2/
+│  │  │  ├─ config.yml
+│  │  │  ├─ EfficientNet.png
+│  │  │  ├─ main.py
+│  │  │  └─ README.md
+│  │  ├─ ResNet34/
+│  │  │  ├─ config.yml
+│  │  │  ├─ main.py
+│  │  │  ├─ README.md
+│  │  │  └─ res net.png
+│  │  ├─ SwinTransformer/
+│  │  │  ├─ config.yml
+│  │  │  ├─ main.py
+│  │  │  ├─ README.md
+│  │  │  └─ swinT.png
+│  │  ├─ ViT-16/
+│  │  │  ├─ config.yml
+│  │  │  ├─ main.py
+│  │  │  ├─ README.md
+│  │  │  └─ Vit.png
+│  ├─ data_utils.py
+│  ├─ training_utils.py
+│  └─ utils.py
+
+```
 
 ## Results 
 During our experiments EfficientNet consistently demonstrated the best performance in terms of accuracy and loss across the different datasets. However, SwinT also showed promising results, indicating the potential of transformers for image classification. Both of these models demonstrate an optimal balance between complexity and efficiency. SwinT also exhibited the best performance in comparison to ViT16. By contrast, ResNet, despite being a deep and effective architecture, lead to poorer results compared to EfficientNet.
@@ -41,37 +75,43 @@ More about the results with a more detailed comment of our work can be found on 
 ## Repository guide
 
 1. **Clone the repository**
-    ```sh
-    git clone https://github.com/andreleo02/deep-dream-team.git
-    ```
+
+   ```sh
+   git clone https://github.com/andreleo02/deep-dream-team.git
+   ```
 
 2. **Install the requirements**:
 
-    ```sh
-    pip install -r requirements.txt
-    ```
+   ```sh
+   pip install -r requirements.txt
+   ```
 
 3. **Install the CUDA package** (if using GPU):
 
-    Follow [instructions](https://pytorch.org/get-started/locally/).
+   Follow [instructions](https://pytorch.org/get-started/locally/).
 
 4. **Track results with Weights & Biases (wandb)**:
 
-    - Create a profile on [wandb](https://wandb.ai/).
-    - On the first run with `wandb` config flag set to `True`, you'll be asked to insert an API KEY. Generate it from the `Settings` section of your wandb account.
+   - Create a profile on [wandb](https://wandb.ai/).
+   - On the first run with `wandb` config flag set to `True`, you'll be asked to insert an API KEY. Generate it from the `Settings` section of your wandb account.
 
 5. **Run experiments**:
 
-    To replicate experiments on these models and datasets iside a model folder, use       the following command:
+   To replicate experiments on these models and datasets iside a model folder, use the following command:
 
-    ```sh
-    python main.py --config ./config.yml --run_name <run_name>
-    ```
+   ```sh
+   python main.py --config ./config.yml --run_name <run_name>
+   ```
 
-    Feel free to play with the parameters in the `config.yml` and have fun!
+   Feel free to play with the parameters in the `config.yml` and have fun!
 
 ---
 
+## Guidelines to download datasets
+
+### Manual Download
+
+The datasets can be manually downloaded and added to the `src/data` folder. This folder is however **ignored by git** and so it will only exists in the local environment.
 
 ## How to use different datasets
 
@@ -84,6 +124,36 @@ The datasets can be manually downloaded and added to the `src/data` folder. This
 ### Torchvision datasets
 To choose a dataset from `torchvision`, set the `custom` field to `False`. The dataset function must be specified inside the `main.py` file of the model (see `SwinTransformer` model).
 
+### Choosing a Dataset from `torchvision`
+
+To choose a dataset from `torchvision`, set the `custom` field to `False`. The dataset function must be specified inside the `main.py` file of the model (see the `SwinTransformer` model for an example).
+
+## Training a New Model (Pre-trained model from PyTorch is recommended)
+
+Follow these steps:
+
+1. **Select a pre-trained model** from [PyTorch](https://pytorch.org/vision/stable/models.html#classification) or create your own.
+
+2. **Create a folder for the model** in the `models` directory.
+
+3. **Inside the new folder, create three files**:
+
+   - `config.yml`
+   - `main.py`
+   - `README.md` (to clarify what the model does)
+
+4. **Optional**: Create a custom function to freeze some layers based on the model.
+
+5. **Define the proper components**:
+
+   - Loss function
+   - Optimizer
+   - Scheduler
+
+6. **Specify the run parameters** in the `config.yml` file as preferred:
+
+   - In the `data` section, choose to download a dataset not available directly from `torchvision`.
+   - Set `wandb` parameter to `False` to avoid tracking results on the wandb personal profile.
 
 
 --- 

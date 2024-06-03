@@ -1,11 +1,12 @@
 # EfficientNetV2
+
 For the first time, with EfficientNet, a new approach has been introduced: compound scaling. This approach focuses on the simultaneous scaling of all three dimensions of a neural network (width, depth and resolution of the input), rather than on a single dimension alone. In the Efficient Net, three constant coefficients are determined by conducting a small grid search on the model. The depth (d), the width (w) represented by and finally the image size (r). These three values are scaled by a compound coefficient Phi.
 
 
 <br>
 
 <p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/b0373d74a443032450c71075cdc4050240c32339/EfficientNet.png?raw=true" width="512"/>  
+  <img src="./EfficientNet.png" width="512"/>  
 </p>
 
 <p align="center">
