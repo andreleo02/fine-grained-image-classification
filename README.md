@@ -36,7 +36,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 The results with the comment of the work can be found on the [paper]().
 
   
-## Steps to follow to reproduce our experiments 
+## Repository guide
 
 1. **Clone the repository**
     ```sh
