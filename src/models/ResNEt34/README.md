@@ -7,5 +7,5 @@ The advent of residual neural networks (ResNets) represented a significant devel
 </p>
 
 <p align="center">
-  <sub><em>Example of fine grained image classification on flowers: object present smaller differences between them and hace a high degree of similarity.</em></sub>
+  <sub><em>Residual Block of a Residual Network (ResNet): the Residual Connection skips two layers.</em></sub>
 </p>
