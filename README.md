@@ -40,8 +40,6 @@ The results with the comment of the work can be found on the [paper]().
 
 ## Prepare the environment
 
-# Preparing the Environment
-
 1. **Clone the repository**.
 
 2. **Install the requirements**:
@@ -52,16 +50,16 @@ The results with the comment of the work can be found on the [paper]().
 
 3. **Install the CUDA package** (if using GPU):
 
-    Follow [these instructions](#).
+    Follow [instructions](https://pytorch.org/get-started/locally/).
 
 4. **Track results with Weights & Biases (wandb)**:
 
     - Create a profile on [wandb](https://wandb.ai/).
-    - On the first run with `wandb` config flag set to `True`, you'll be asked to insert an API KEY. Generate it from the Settings section of your wandb account.
+    - On the first run with `wandb` config flag set to `True`, you'll be asked to insert an API KEY. Generate it from the `Settings` section of your wandb account.
 
 5. **Run experiments**:
 
-    Inside a model folder, use the following command:
+    To replicate experiments on these models and datasets iside a model folder, use       the following command:
 
     ```sh
     python main.py --config ./config.yml --run_name <run_name>
@@ -71,25 +69,6 @@ The results with the comment of the work can be found on the [paper]().
 
 ---
 
-
-After cloning the repository, install the requirements using the following command.
-
-```
-pip install -r requirements.txt
-```
-
-Additionally, to run the experiments using _GPU_, download also the `cuda` package following these [instructions](https://pytorch.org/get-started/locally/).
-
-If you want to keep track of the results, it is suggested to create a profile on [wandb](https://wandb.ai). On the first run with the `wandb` config flag set to `True`, will be asked to insert an API KEY for the profile. This can be generated from the `Settings` section of the account.
-
-
-To replicate experiments on these models and datasets, run the following command inside a model folder:
-
-```
-python main.py --config ./config.yml --run_name <run_name>
-```
-
-Play with the parameters in the `config.yml` and have fun!
 
 ## Guidelines to download datasets
 
