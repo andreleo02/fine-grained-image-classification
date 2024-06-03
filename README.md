@@ -39,7 +39,11 @@ The results with the comment of the work can be found on the [paper]().
 
 ### Prepare the environment
 
-1. **Clone the repository**.
+1. **Clone the repository**
+
+  ```sh
+  git clone https://github.com/andreleo02/deep-dream-team.git
+  ```
 
 2. **Install the requirements**:
 
