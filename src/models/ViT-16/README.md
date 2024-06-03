@@ -1,6 +1,7 @@
 # ViT 16
 
 The Vision Transformer (ViT) architecture, introduced by Dosovitskiy et al., diverges from the conventional approach of using convolutions to process images. Instead, it splits an image into fixed-size patches, which enables the transformer to capture long-range dependencies, a capability that is particularly beneficial for understanding complex spatial relationships in images. The core idea is to treat image patches as tokens, analogous to words in a sentence, and employ a transformer encoder to model their relationships.
+***Official [paper](https://arxiv.org/abs/2010.11929v2) available***
 
 <br>
 
