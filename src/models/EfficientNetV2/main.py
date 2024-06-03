@@ -1,9 +1,11 @@
-import argparse, sys, os, yaml
+import torch
 import torch.nn as nn
+import torch.optim as optim
+import torchvision.transforms as transforms
+import argparse, sys, os, yaml
+
 from torchvision.models import efficientnet_v2_s, EfficientNet_V2_S_Weights
 from torchvision.datasets import FGVCAircraft, Flowers102
-import torch.optim as optim
-import torch
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..')))
 
@@ -31,9 +33,23 @@ if __name__ == "__main__":
     num_classes = config["data"]["num_classes"]
     dataset_name = config["data"]["dataset_name"]
 
-
     model.classifier[1] = nn.Linear(model.classifier[1].in_features, num_classes)
     freeze_layers(model = model, num_blocks_to_freeze = frozen_layers)
+
+
+    train_transforms = transforms.Compose([
+        transforms.RandomResizedCrop(size = (224, 224), antialias = True),
+        transforms.RandomHorizontalFlip(p = 0.5),
+        transforms.ToTensor(),
+        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
+    ])
+
+    val_transforms = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(224),
+        transforms.ToTensor(),
+        transforms.Normalize(mean = [0.485, 0.456, 0.406], std = [0.229, 0.224, 0.225]),
+    ])
     
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(filter(lambda p: p.requires_grad, model.parameters()),
@@ -47,6 +63,8 @@ if __name__ == "__main__":
          dataset_function = Flowers102,
          dataset_name = dataset_name,
          num_classes = num_classes,
+         train_transforms = train_transforms,
+         val_transforms = val_transforms,
          criterion = criterion,
          optimizer = optimizer,
          scheduler = scheduler,
