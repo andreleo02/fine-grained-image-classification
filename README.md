@@ -40,6 +40,38 @@ The results with the comment of the work can be found on the [paper]().
 
 ## Prepare the environment
 
+# Preparing the Environment
+
+1. **Clone the repository**.
+
+2. **Install the requirements**:
+
+    ```sh
+    pip install -r requirements.txt
+    ```
+
+3. **Install the CUDA package** (if using GPU):
+
+    Follow [these instructions](#).
+
+4. **Track results with Weights & Biases (wandb)**:
+
+    - Create a profile on [wandb](https://wandb.ai/).
+    - On the first run with `wandb` config flag set to `True`, you'll be asked to insert an API KEY. Generate it from the Settings section of your wandb account.
+
+5. **Run experiments**:
+
+    Inside a model folder, use the following command:
+
+    ```sh
+    python main.py --config ./config.yml --run_name <run_name>
+    ```
+
+    Feel free to play with the parameters in the `config.yml` and have fun!
+
+---
+
+
 After cloning the repository, install the requirements using the following command.
 
 ```
