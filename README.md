@@ -27,14 +27,10 @@ If something is missing in this guide, please feel free to open an issue on this
 
 
 ## Experiments 
-
+To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on three very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
 - **CUB 200 2011**
-
-
 - **Oxford Flowers 102** (from pytorch)
-  
 - **FGVC Aircraft** (from pytorch)
-
 - **Mammalia**
 
 The results with the comment of the work can be found on the [paper]().
