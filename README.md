@@ -18,10 +18,10 @@ This project aims to conduct an exploratory analysis of fine-grained image class
 ## Models 
 To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks  and two belonging to the family of transformers, for comparative purposes:
 
-- **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/7964a7d63d8beab4f713f7030f3412d59899445c/src/models/EfficientNetV2)**
-- **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/ResNEt34)**
-- **[SwinTransformer](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/SwinTransformer)**
-- **[ViT-16](https://github.com/andreleo02/deep-dream-team/tree/c80422b86efe3ef2454dc738407a3fa4863da757/src/models/ViT-16)**
+- **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/EfficientNetV2)**
+- **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ResNEt34)**
+- **[SwinTransformer](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/SwinTransformer)**
+- **[ViT-16](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ViT-16)**
 
 If something is missing in this guide, please feel free to open an issue on this repo.
 
