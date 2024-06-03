@@ -6,10 +6,15 @@ Fine-grained image classification involves distinguishing between visually simil
 ![Fine-grained-classification-vs-general-image-classification-Finegrained-classification png](https://github.com/andreleo02/deep-dream-team/assets/159782399/6194b503-d2fb-4af1-a558-ca13bae36efc)
 
 If something is missing in this guide, please feel free to open an issue on this repo.
-##Experiments 
+
+## Experiments 
 For this project we conducted experiments testing our four models on 3 different datasets:
 - Caltech-UCSD Birds-200-2011 (CUB-200-2011): it is an extended version of CUB-200. The extended version roughly doubles the number of images per category and adds new part localization annotations. All images are annotated with bounding boxes, part locations, and attribute labels. Images and annotations were filtered by multiple users of Mechanical Turk
+![]
+
 - Oxford Flowers 102: The images have large scale, pose and light variations. In addition, there are categories that have large variations within the category and several very similar categories.
+
+  
 - FGVC-Aircraft dataset: Aircraft, and in particular airplanes, are alternative to objects typically considered for fine-grained categorization such as birds and pets.
 
   
