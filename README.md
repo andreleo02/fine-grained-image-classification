@@ -28,14 +28,14 @@ If something is missing in this guide, please feel free to open an issue on this
 
 ## Experiments 
 
-- **CUB 200 2011**: one of the most widely used dataset for fine-grained visual categorisation tasks. It contains 11,788 images of 200 subcategories belonging to birds, 5,994 for training and 5,794 for testing. All images are annotated with bounding boxes, part locations, and attribute labels. Images and annotations were filtered by multiple users of Mechanical Turk.
+- **CUB 200 2011**
+
+
+- **Oxford Flowers 102** (from pytorch)
   
+- **FGVC Aircraft** (from pytorch)
 
-- **Oxford Flowers 102** (from pytorch): It consists of 102 flower categories. The flowers selected for inclusion in the study are those that are commonly observed in the United Kingdom. Each class comprises between 40 and 258 images.  The images have large scale, pose and light variations. In addition, there are categories that have large variations within the category and several very similar categories.
-- 
-- **FGVC Aircraft** (from pytorch): It contains 10,200 images of aircraft, with 100 images for each of 102 different aircraft model variants. Aircraft, and in particular airplanes, are alternative to objects typically considered for fine-grained categorization such as birds and pets.
-
--**Mammalia**: It contains 100 different classes of mammals. For the training set, each class of the dataset contained 50 images, giving a total of 5000 images, while the test set contained 10 images per class, giving 1000 test images. To obtain the validation set, 20\% of the training set was selected randomly.
+- **Mammalia**
 
 The results with the comment of the work can be found on the [paper]().
 
