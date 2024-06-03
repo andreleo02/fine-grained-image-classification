@@ -85,24 +85,39 @@ To choose a dataset from `torchvision`, set the `custom` field to `False`. The d
 
 To choose a dataset from `torchvision`, set the `custom` field to `False`. The dataset function must be specified inside the `main.py` file of the model (see the `SwinTransformer` model for an example).
 
-## How to train a new model (pre-trained model from pytorch is recommended)
+## Training a New Model (Pre-trained model from PyTorch is recommended)
 
 Follow these steps:
 
-1. Select one of the pre-trained models present in [pytorch](https://pytorch.org/vision/stable/models.html#classification) or create your own.
-2. Create a folder for the model in the `models` folder.
-3. Inside the new folder, create three files: `config.yml`, `main.py` and `README.md` (to clarify what the model does).
-4. If needed, create a custom function to freeze some layers based on the model.
-5. Define the proper _loss function_, _optimizer_ and _scheduler_.
-6. Specify the run parameters in the `config.yml` file as preferred:
-   - in the `data` section it can be chosen to download a dataset that is not available directly from `torchvision`
-   - the parameter `wandb` can be set to `False` to avoid keeping track of the results on the wandb personal profile
-7. Call the main function with the required parameters (there is an example in the `SwinTransformer` folder).
-8. From the terminal, move to the folder of the model and run the following command
+1. **Select a pre-trained model** from [PyTorch](https://pytorch.org/vision/stable/models.html#classification) or create your own.
 
-```
-python main.py --config ./config.yml --run_name <run_name>
-```
+2. **Create a folder for the model** in the `models` directory.
+
+3. **Inside the new folder, create three files**:
+   - `config.yml`
+   - `main.py`
+   - `README.md` (to clarify what the model does)
+
+4. **Optional**: Create a custom function to freeze some layers based on the model.
+
+5. **Define the proper components**:
+   - Loss function
+   - Optimizer
+   - Scheduler
+
+6. **Specify the run parameters** in the `config.yml` file as preferred:
+   - In the `data` section, choose to download a dataset not available directly from `torchvision`.
+   - Set `wandb` parameter to `False` to avoid tracking results on the wandb personal profile.
+
+7. **Call the main function** with the required parameters (example available in the `SwinTransformer` folder).
+
+8. **Run the model**:
+   - From the terminal, navigate to the model's folder.
+   - Run the following command:
+
+   ```sh
+   python main.py --config ./config.yml --run_name <run_name>
+   ```
 
 ## Authors
 
