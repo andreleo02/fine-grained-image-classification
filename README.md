@@ -112,13 +112,6 @@ Follow these steps:
 
 7. **Call the main function** with the required parameters (example available in the `SwinTransformer` folder).
 
-8. **Run the model**:
-   - From the terminal, navigate to the model's folder.
-   - Run the following command:
-
-   ```sh
-   python main.py --config ./config.yml --run_name <run_name>
-   ```
 
 ## Authors
 
