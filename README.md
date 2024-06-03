@@ -31,7 +31,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 - **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
 - **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)** 
 - **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
-- **[Mammalia](https://drive.google.com/file/d/1uTFLGixs4IFPQW5W5-O6nBmtBfSwHEal/view)
+- **Mammalia**
 
 The results with the comment of the work can be found on the [paper]().
 
