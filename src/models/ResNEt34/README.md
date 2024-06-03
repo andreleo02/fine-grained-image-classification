@@ -10,3 +10,5 @@ The advent of residual neural networks (ResNets) represented a significant devel
 <p align="center">
   <sub><em>Residual Block of a Residual Network (ResNet): the Residual Connection skips two layers.</em></sub>
 </p>
+
+For further information please visit the official Pytorch [documentation](https://pytorch.org/hub/pytorch_vision_resnet/) about ResNet.
