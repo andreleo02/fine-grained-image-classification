@@ -16,7 +16,7 @@ This paper presents an exploratory analysis of fine-grained image classification
 
 
 ## Models 
-The authors of the repository, trained and validated the following models:
+To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks  and two belonging to the family of transformers, for comparative purposes:
 
 - **EfficientNetV2**
 - **ResNEt34**
@@ -27,7 +27,7 @@ If something is missing in this guide, please feel free to open an issue on this
 
 
 ## Experiments 
-To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on three very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
+To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on four very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
 - **CUB 200 2011**
 - **Oxford Flowers 102** (from pytorch)
 - **FGVC Aircraft** (from pytorch)
