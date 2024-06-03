@@ -7,7 +7,7 @@ For the first time, with EfficientNet, a new approach has been introduced: compo
 </p>
 
 <p align="center">
-  <sub><em>Model scaling: the figure represents examples of model scaling. The first figure represents the baseline (a), followed by an example of width scaling (b), depth scaling (c) and resolution scaling (d). The last network represents the compound scaling (e), wich scales all the three previous dimensions. From (Mingxing Tan, Quoc V. Le)[https://arxiv.org/abs/1905.11946v5] (2019), "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks"</em></sub>
+  <sub><em>Model scaling: the figure represents examples of model scaling. The first figure represents the baseline (a), followed by an example of width scaling (b), depth scaling (c) and resolution scaling (d). The last network represents the compound scaling (e), wich scales all the three previous dimensions. From [Mingxing Tan, Quoc V. Le](https://arxiv.org/abs/1905.11946v5) (2019), "EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks"</em></sub>
 </p>
 
 For further information please visit the official Pytorch [documentation](https://pytorch.org/hub/nvidia_deeplearningexamples_efficientnet/) about EfficientNet.
