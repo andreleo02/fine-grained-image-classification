@@ -28,10 +28,9 @@ If something is missing in this guide, please feel free to open an issue on this
 
 ## Experiments 
 To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on four very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
-- **CUB 200 2011**
-- **Oxford Flowers 102** (from pytorch)
-- **FGVC Aircraft** (from pytorch)
-- **Mammalia**
+- **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
+- **[Oxford Flowers 102](https://www.google.com/search?q=flowers102+dataset&client=safari&sca_esv=3f074e5da93b5e88&rls=en&sxsrf=ADLYWIKqIiO0WYfB8tV_B-MMufGcgp9FVg%3A1717421674630&ei=asZdZpmJJvP87_UPlr6I-AE&ved=0ahUKEwiZ5uGmxr-GAxVz_rsIHRYfAh8Q4dUDCBA&uact=5&oq=flower&gs_lp=Egxnd3Mtd2l6LXNlcnAiBmZsb3dlcjIMECMYgAQYExgnGIoFMgwQIxiABBgTGCcYigUyDBAjGIAEGBMYJxiKBTIKEAAYgAQYQxiKBTIOEC4YgAQYxwEYjgUYrwEyCBAuGIAEGLEDMggQABiABBixAzIOEC4YgAQYsQMYxwEYrwEyBRAAGIAEMggQLhiABBixA0j4DFAAWNcFcAB4AJABAZgBjQegAY0UqgENMC4yLjAuMS4xLjEuMbgBA8gBAPgBAZgCBaACuxHCAgQQIxgnwgIREC4YgAQYsQMY0QMYgwEYxwHCAgsQLhiABBixAxiDAcICCxAAGIAEGLEDGIMBwgIOEC4YgAQYsQMYgwEYigXCAgsQLhiABBjHARivAZgDAJIHCzAuMi40LTIuMC4xoAeWdQ&sclient=gws-wiz-serp)** 
+- **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)** 
 
 The results with the comment of the work can be found on the [paper]().
 
