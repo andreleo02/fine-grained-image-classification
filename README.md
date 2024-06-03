@@ -5,13 +5,16 @@
 Fine-grained image classification involves distinguishing between visually similar subcategories within a larger category. This task is particularly challenging due to the subtle differences in appearance that define each subcategory. Our project aims to address this challenge by employing state-of-the-art deep learning techniques and leveraging transfer learning from pre-trained models.
 <br>
 
+<br>
+
 <p align="center">
-  <img src="images/Fine-grained-classification-vs-general-image-classification.png" width="512"/>  
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/9f9672f7b2fb71ec20b1a9eac890e3074ff0ddab/Fine%20grained%20vs%20image%20classification%20.jpeg?raw=true" width="512"/>  
 </p>
 
 <p align="center">
   <sub><em>Fine-grained classification vs. general image classification. Detailed description of the image.</em></sub>
 </p>
+
 
 
 If something is missing in this guide, please feel free to open an issue on this repo.
