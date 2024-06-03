@@ -12,4 +12,4 @@ The Vision Transformer (ViT) architecture, introduced by Dosovitskiy et al., div
   <sub><em> ViT 16 architecture: as can be seen in this figure, ViT16 splits the input image into fixed-size patches, it linearly embed them and feed this embeddings to the Transformer Encoder. Then, a standard MLP Head is used for classification.</em></sub>
 </p>
 
-For further information please visit the official Pytorch [documentation (https://pytorch.org/vision/main/models/vision_transformer.html) about Vision Transformer.
+For further information please visit the official Pytorch [documentation](https://pytorch.org/vision/main/models/vision_transformer.html) about Vision Transformer.
