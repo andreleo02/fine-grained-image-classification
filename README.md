@@ -71,7 +71,7 @@ The results with the comment of the work can be found on the [paper]().
 ---
 
 
-## Guidelines to download datasets
+## How to use different datasets
 
 ### Custom datasets
 The datasets can be manually downloaded and added to the `src/data` folder. This folder is however **ignored by git** and so it will only exists in the local environment. To keep the process of training the models as smooth as possible, some functions to download libraries directly from the code are defined in the `utils.py` file. Datasets can be downloaded from web (`.zip` and `.tgz`).
