@@ -126,7 +126,7 @@ During our experiments we trained and validated each ***model*** on each ***data
 | ViT16 | 0.13 | 0.46 | 2.23 | 1.70 | 
 | Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
 
- More about the results including the validation losse over epochs for each model can be found in our [paper]().
+ More details about the results of our experiments (including information about the training phase) for each model can be found in our [paper]().
 
 <p>
   <sub><em> Note: for the mammalia dataset, in the context of the competition of the Introduction to Machine Learning Course (University of Trento, y. 2024), we also trained ResNet50 and SwinB. More datails about these specific runs can be found in the paper in the section "Competition".</em></sub>
