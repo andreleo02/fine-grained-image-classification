@@ -17,8 +17,7 @@ This project aims to conduct an exploratory analysis of fine-grained image class
 ## Project structure
 
 ```
-┌─ fine grained image classification on flowers.png
-├─ README.md
+┌─ README.md
 ├─ requirements.txt
 ├─ src/
 │  ├─ models/
@@ -28,20 +27,11 @@ This project aims to conduct an exploratory analysis of fine-grained image class
 │  │  │  ├─ main.py
 │  │  │  └─ README.md
 │  │  ├─ ResNet34/
-│  │  │  ├─ config.yml
-│  │  │  ├─ main.py
-│  │  │  ├─ README.md
-│  │  │  └─ res net.png
+        ...
 │  │  ├─ SwinTransformer/
-│  │  │  ├─ config.yml
-│  │  │  ├─ main.py
-│  │  │  ├─ README.md
-│  │  │  └─ swinT.png
+        ...
 │  │  ├─ ViT-16/
-│  │  │  ├─ config.yml
-│  │  │  ├─ main.py
-│  │  │  ├─ README.md
-│  │  │  └─ Vit.png
+        ...
 │  ├─ data_utils.py
 │  ├─ training_utils.py
 │  └─ utils.py
