@@ -68,7 +68,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 - **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
 - **[Mammalia]()** 
 <p>
-  <sub><em> Note: Mammalia dataset is not publicly available but was used in the context of the competition of the Introduction to Machine Learning Course and provided by the University of Trento.</em></sub>
+  <sub><em> Note: Mammalia dataset is not publicly available but was used in the context of the competition of the Introduction to Machine Learning Course and provided by the University of Trento. This dataset contains 100 different classes of mammals. For more detailed information please consult our paper. </em></sub>
 </p>
 
 
