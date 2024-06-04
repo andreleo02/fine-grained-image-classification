@@ -97,8 +97,10 @@ During our experiments EfficientNet consistently demonstrated the best performan
 | Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
 
 <p>
-  <sub><em> More about the results including the validation losse over epochs for each model can be found in our [paper]().</em></sub>
+  <sub><em> Note: for the mammalia dataset, in the context of the competition of the Introduction to Machine Learning Course (University of Trento, y. 2024) we also trained ResNet50 and SwinB. More datails about this specific runs can be found in the paper in the section "Competition".</em></sub>
 </p>
+
+ More about the results including the validation losse over epochs for each model can be found in our [paper]().
 
   
 ## Repository guide
