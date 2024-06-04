@@ -40,7 +40,7 @@ This project aims to conduct an exploratory analysis of fine-grained image class
   
 In the **`src`** folder you will find: 
 
-- **`models`**: containing subdirectories for different neural network models; each model has its `README.mb` with a brief description of its srchitecture, a       `main.py` containing the script to run the model and a `config.yml` with all the paramters of the model.
+- **`models`**: containing subdirectories for different models used for our experiments; each model has its `README.mb` with a brief description of its srchitecture, a       `main.py` containing the script to run the model and a `config.yml` with all the paramters of the model.
   
 - **`data_utils.py`**: utility functions for data handling and preprocessing.
   
