@@ -81,6 +81,29 @@ During our experiments EfficientNet consistently demonstrated the best performan
   <sub><em>Accuracy of our models on FGVC Aircraft dataset. </em></sub>
 </p>
 
+
+<br>
+
+<p align="center">
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/7fef32b276ec183c5519e5e93d49b3870bda9520/accuracy%20cub.jpg?raw=true" width="512"/>  
+</p>
+
+<p align="center">
+  <sub><em>Accuracy of our models on CUB 200 2011 dataset. </em></sub>
+</p>
+
+
+<br>
+
+<p align="center">
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/7fef32b276ec183c5519e5e93d49b3870bda9520/accuracy%20flowers.jpg?raw=true" width="512"/>  
+</p>
+
+<p align="center">
+  <sub><em>Accuracy of our models on Oxford Flowers 102 dataset. </em></sub>
+</p>
+
+
 More about the results with a more detailed comment of our work can be found on the [paper]().
 
   
