@@ -7,7 +7,7 @@ This project aims to conduct an exploratory analysis of fine-grained image class
 <br>
 
 <p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/939a8f82ba51ad641e39d62bb95e40f5309fd958/fine%20grained%20image%20classification%20on%20flowers.png?raw=true" width="512"/>  
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/438b36ca8076da82890a56df2ff4e28dcfca60e4/Fine-grained-classification-vs-general-image-classification-Finegrained-classification.png.jpeg?raw=true" width="512"/>  
 </p>
 
 <p align="center">
