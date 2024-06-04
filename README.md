@@ -67,7 +67,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
   <br>
 
 <p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/7cc62f96cf4fd7e4a9c9739abd99227fb38c140c/CUB-200-2011-0000000109-6e01ce73_vMleyYb.jpeg" width="256"/>  
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/7cc62f96cf4fd7e4a9c9739abd99227fb38c140c/CUB-200-2011-0000000109-6e01ce73_vMleyYb.jpeg" width="350"/>  
 </p>
 
 <p align="center">
@@ -78,7 +78,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 <br>
 
 <p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/d48b5728ed9e2bbc55d0092f96d69c0ceade84eb/Image-examples-from-Flowers102-dataset.jpg?raw=true" width="512"/>  
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/d48b5728ed9e2bbc55d0092f96d69c0ceade84eb/Image-examples-from-Flowers102-dataset.jpg?raw=true" width="350"/>  
 </p>
 
 <p align="center">
@@ -89,7 +89,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 <br>
 
 <p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/49d700167aef624473f743a45e6aee2f117570c3/FGVC-Aircraft-0000003405-c35d29b7.jpg?raw=true" width="512"/>  
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/49d700167aef624473f743a45e6aee2f117570c3/FGVC-Aircraft-0000003405-c35d29b7.jpg?raw=true" width="350"/>  
 </p>
 
 <p align="center">
