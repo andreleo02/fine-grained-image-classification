@@ -169,24 +169,18 @@ During our experiments we trained and validated each ***model*** on each ***data
 ---
 ## How to use different models
 
-## How to Use Different Models
-
 Follow these steps:
 
-1. **Select a Pre-trained Model**  
-   Choose one of the pre-trained models available in [PyTorch](https://pytorch.org/vision/stable/models.html#classification).
+1. Choose one of the pre-trained models available in [PyTorch](https://pytorch.org/vision/stable/models.html#classification).
 
-2. **Create a Model Folder**  
-   In the `models` directory, create a new folder for your selected model.
+2. In the `models` directory, create a new folder for your selected model.
 
-3. **Set Up the Model Directory**  
-   Inside the newly created folder, add the following files:
+3. Inside the newly created folder, add the following files:
    - `config.yml`
    - `main.py`
    - `README.md`
 
-4. **Configure Your Model**  
-   Specify the run parameters in the `config.yml` file.
+4. Specify the run parameters in the `config.yml` file.
 
 Here's a sample directory structure:
 ```
