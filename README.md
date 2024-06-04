@@ -147,6 +147,27 @@ During our experiments we trained and validated each ***model*** on each ***data
 | ViT16 | 0.13 | 0.46 | 2.23 | 1.70 | 
 | Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
 
+<table border="0">
+<tr>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/860c0bc4df7ece94dca9418d3a34f54d60b9536e/loss%20aircraft.jpg" width="100%" />
+    </td>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/860c0bc4df7ece94dca9418d3a34f54d60b9536e/loss%20cub.jpg", width="100%" />
+    </td>
+</tr>
+</table>
+
+<table border="0">
+<tr>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/860c0bc4df7ece94dca9418d3a34f54d60b9536e/loss%20flowers.jpg" width="100%" />
+    </td>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/860c0bc4df7ece94dca9418d3a34f54d60b9536e/loss%20mammalia.jpg", width="100%" />
+    </td>
+</tr>
+</table>
 
  More details about the results of our experiments (including information about the training phase) for each model can be found in our [paper](https://github.com/andreleo02/deep-dream-team/blob/8e4b56d933e07fccc3834fa6e1ea1f2b7000dcdf/PAPER.pdf).
 
