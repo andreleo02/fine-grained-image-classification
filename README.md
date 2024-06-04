@@ -169,13 +169,33 @@ During our experiments we trained and validated each ***model*** on each ***data
 ---
 ## How to use different models
 
+## How to Use Different Models
+
 Follow these steps:
 
-1. Select one of the pre-trained models present in [pytorch](https://pytorch.org/vision/stable/models.html#classification).
-2. Create a folder for the model in the `models` folder.
-3. Inside the new folder, create three files: `config.yml`, `main.py` and `README.md` (to clarify what the model does).
-4. Call the main function with the required parameters (there is an example in the `SwinTransformer` folder).
-5. Specify the run paramenters in the `config.yml` file.
+1. **Select a Pre-trained Model**  
+   Choose one of the pre-trained models available in [PyTorch](https://pytorch.org/vision/stable/models.html#classification).
+
+2. **Create a Model Folder**  
+   In the `models` directory, create a new folder for your selected model.
+
+3. **Set Up the Model Directory**  
+   Inside the newly created folder, add the following files:
+   - `config.yml`
+   - `main.py`
+   - `README.md`
+
+4. **Configure Your Model**  
+   Specify the run parameters in the `config.yml` file.
+
+Here's a sample directory structure:
+```
+models/
+├── YourModelName/
+│   ├── config.yml
+│   ├── main.py
+│   └── README.md
+```
 
 ---
 
