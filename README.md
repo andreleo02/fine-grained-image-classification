@@ -108,12 +108,6 @@ More about the results with a more detailed comment of our work can be found on 
 
 ---
 
-## Guidelines to download datasets
-
-### Manual Download
-
-The datasets can be manually downloaded and added to the `src/data` folder. This folder is however **ignored by git** and so it will only exists in the local environment.
-
 ## How to use different datasets
 
 ### Custom datasets
