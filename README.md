@@ -73,7 +73,7 @@ During our experiments EfficientNet consistently demonstrated the best performan
 
 <br>
 
-<p align=https://github.com/andreleo02/deep-dream-team/blob/975da7c4c10fdc3d94eb83712e6b67713bff7e09/accuracy%20aircrafts.jpg?raw=true" width="512"/>  
+<p align="https://github.com/andreleo02/deep-dream-team/blob/975da7c4c10fdc3d94eb83712e6b67713bff7e09/accuracy%20aircrafts.jpg?raw=true" width="512"/>  
 </p>
 
 <p align="center">
