@@ -126,6 +126,18 @@ During our experiments we trained and validated each ***model*** on each ***data
 | ViT16 | 0.13 | 0.46 | 2.23 | 1.70 | 
 | Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
 
+
+<table border="0">
+<tr>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/c8e259caa035a53fc7466147aefee016cd32efbf/accuracy%20aircrafts.jpg" width="100%" />
+    </td>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/c8e259caa035a53fc7466147aefee016cd32efbf/accuracy%20cub.jpg", width="100%" />
+    </td>
+</tr>
+</table>
+
  More details about the results of our experiments (including information about the training phase) for each model can be found in our [paper](https://github.com/andreleo02/deep-dream-team/blob/8e4b56d933e07fccc3834fa6e1ea1f2b7000dcdf/PAPER.pdf).
 
 <p>
