@@ -1,6 +1,6 @@
-# Fine-grained image classification
+# Fine-Grained Image Classification
 
-## Project for the Introduction to Machine Learning course (2023/2024).
+## Computer Vision Project
 
 This project aims to conduct an exploratory analysis of fine-grained image classification, a complex task in computer vision requiring deep learning models to discern subtle differences between highly similar images. The performance of two convolutional neural network (CNN) architectures and two transformer-based architectures has been compared across three fine-grained datasets. The experiments were conducted using pre-trained models that had been fine-tuned on these datasets. The focus was on evaluating the accuracy and loss of the models. Our findings highlight the significance of model architecture and training strategies in attaining high performance in fine-grained visual tasks.
 
