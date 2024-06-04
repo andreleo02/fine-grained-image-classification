@@ -11,7 +11,7 @@ This project aims to conduct an exploratory analysis of fine-grained image class
 </p>
 
 <p align="center">
-  <sub><em>Example of fine grained image classification on flowers: object present smaller differences between them and a high degree of similarity.</em></sub>
+  <sub><em>Fine grained classification vs general image classification: fine grained classification aims to distinguish between very similar object (red box), while general image classification usually aims to distinguish distinct objects. From Aoxue Li et al.(2017), "Zero-Shot Fine-Grained Classification by Deep Feature Learning with Semantics".</em></sub>
 </p>
 
 ## Project structure
