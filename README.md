@@ -78,7 +78,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 <br>
 
 <p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/d48b5728ed9e2bbc55d0092f96d69c0ceade84eb/Image-examples-from-Flowers102-dataset.jpg?raw=true" width="400"/>  
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/d48b5728ed9e2bbc55d0092f96d69c0ceade84eb/Image-examples-from-Flowers102-dataset.jpg?raw=true" width="450"/>  
 </p>
 
 <p align="center">
