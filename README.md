@@ -71,6 +71,17 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 ## Results 
 During our experiments EfficientNet consistently demonstrated the best performance in terms of accuracy and loss across the different datasets. However, SwinT also showed promising results, indicating the potential of transformers for image classification. Both of these models demonstrate an optimal balance between complexity and efficiency. SwinT also exhibited the best performance in comparison to ViT16. By contrast, ResNet, despite being a deep and effective architecture, lead to poorer results compared to EfficientNet.
 
+**Validation accuracy of our mdoels over different datasets**
+
+| Model | CUB | Flowers | Aircrafts |  
+| :---: | :---: | :---: | :---: | 
+| ResNet34 | 97.77 | 94.22 | 66.69 | 
+| EfficientNetV2 | 99.91 | 95.80 | 76.49 | 
+| ViT16 | 98.36 | 88.01 | 44.99 |
+| Swin-T | 98.18 | 94.12 | 71.39 | 
+
+Note: <sup>*</sup> indicates multi-scale testing.
+
 <br>
 
 <p align="center">
