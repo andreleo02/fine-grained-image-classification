@@ -72,7 +72,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 During our experiments EfficientNet consistently demonstrated the best performance in terms of accuracy and loss across the different datasets. However, SwinT also showed promising results, indicating the potential of transformers for image classification. Both of these models demonstrate an optimal balance between complexity and efficiency. SwinT also exhibited the best performance in comparison to ViT16. By contrast, ResNet, despite being a deep and effective architecture, lead to poorer results compared to EfficientNet.
 
 
-**- Validation accuracy of our models over different datasets**
+**- VALIDATION ACCURACY of our models over different datasets**
 
 
 | Model | CUB | Flowers | Aircrafts | Mammalia|
@@ -82,7 +82,7 @@ During our experiments EfficientNet consistently demonstrated the best performan
 | ViT16 | 98.36 | 88.01 | 44.99 | 59.96 | 
 | Swin-T | 98.18 | 94.12 | 71.39 | 66.50 | 
 
-**- Validation loss of our models over different datasets**
+**- VALIDATION LOSS of our models over different datasets**
 
 
 | Model | CUB | Flowers | Aircrafts | Mammalia|
@@ -92,41 +92,7 @@ During our experiments EfficientNet consistently demonstrated the best performan
 | ViT16 | 0.13 | 0.46 | 2.23 | 1.70 | 
 | Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
 
-Note: More about the results including the validation losse over epochs for each model can be found in our paper.
-
-
-<p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/975da7c4c10fdc3d94eb83712e6b67713bff7e09/accuracy%20aircrafts.jpg?raw=true" width="512"/>  
-</p>
-
-<p align="center">
-  <sub><em>Accuracy of our models on FGVC Aircraft dataset. </em></sub>
-</p>
-
-
-<br>
-
-<p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/7fef32b276ec183c5519e5e93d49b3870bda9520/accuracy%20cub.jpg?raw=true" width="512"/>  
-</p>
-
-<p align="center">
-  <sub><em>Accuracy of our models on CUB 200 2011 dataset. </em></sub>
-</p>
-
-
-<br>
-
-<p align="center">
-  <img src="https://github.com/andreleo02/deep-dream-team/blob/7fef32b276ec183c5519e5e93d49b3870bda9520/accuracy%20flowers.jpg?raw=true" width="512"/>  
-</p>
-
-<p align="center">
-  <sub><em>Accuracy of our models on Oxford Flowers 102 dataset. </em></sub>
-</p>
-
-
-More about the results with a more detailed comment of our work can be found on the [paper]().
+Note: More about the results including the validation losse over epochs for each model can be found in our [paper]().
 
   
 ## Repository guide
