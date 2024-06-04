@@ -107,7 +107,6 @@ During our experiments we trained and validated each ***model*** on each ***data
 
 
 **- VALIDATION ACCURACY**
-<div style="text-align: center;">
 
 | Model | CUB | Flowers | Aircrafts | Mammalia |
 | :---: | :---: | :---: | :---: | :---: |
@@ -115,18 +114,6 @@ During our experiments we trained and validated each ***model*** on each ***data
 | EfficientNetV2 | 99.91 | 95.80 | 76.49 | 66.11 |
 | ViT16 | 98.36 | 88.01 | 44.99 | 59.96 |
 | Swin-T | 98.18 | 94.12 | 71.39 | 66.50 |
-
-</div>
-
-**- VALIDATION LOSS**
-
-
-| Model | CUB | Flowers | Aircrafts | Mammalia|
-| :---: | :---: | :---: | :---: | :---: | 
-| ResNet34 | 0.10 | 0.28 | 1.09 | 2.11 | 
-| EfficientNetV2 | 0.015 | 0.18| 0.78 | 1.42 | 
-| ViT16 | 0.13 | 0.46 | 2.23 | 1.70 | 
-| Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
 
 <table border="0">
 <tr>
@@ -149,6 +136,17 @@ During our experiments we trained and validated each ***model*** on each ***data
     </td>
 </tr>
 </table>
+
+**- VALIDATION LOSS**
+
+
+| Model | CUB | Flowers | Aircrafts | Mammalia|
+| :---: | :---: | :---: | :---: | :---: | 
+| ResNet34 | 0.10 | 0.28 | 1.09 | 2.11 | 
+| EfficientNetV2 | 0.015 | 0.18| 0.78 | 1.42 | 
+| ViT16 | 0.13 | 0.46 | 2.23 | 1.70 | 
+| Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
+
 
  More details about the results of our experiments (including information about the training phase) for each model can be found in our [paper](https://github.com/andreleo02/deep-dream-team/blob/8e4b56d933e07fccc3834fa6e1ea1f2b7000dcdf/PAPER.pdf).
 
