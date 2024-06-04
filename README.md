@@ -173,7 +173,7 @@ Follow these steps:
 
 1. Choose one of the pre-trained models available in [PyTorch](https://pytorch.org/vision/stable/models.html#classification).
 
-2. In the `models`<a href='#models'>Models</a> directory, create a new folder for your selected model.
+2. In the `models` directory, create a new folder for your selected model.
 
 3. Inside the newly created folder, add the following files:
    - `config.yml`
