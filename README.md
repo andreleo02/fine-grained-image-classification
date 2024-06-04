@@ -122,39 +122,8 @@ The datasets can be manually downloaded and added to the `src/data` folder. This
 > [!TIP]
 > To enable the download of a custom dataset, in the `data` section of the `config.yml` file the field `custom` must be set to `True` and the url of the dataset must be specified in the `download_url` field. Specify also the `dataset_name` field with the name of the compressed download folder.
 
-### Torchvision datasets
+###`Torchvision` datasets
 To choose a dataset from `torchvision`, set the `custom` field to `False`. The dataset function must be specified inside the `main.py` file of the model (see `SwinTransformer` model).
-
-### Choosing a Dataset from `torchvision`
-
-To choose a dataset from `torchvision`, set the `custom` field to `False`. The dataset function must be specified inside the `main.py` file of the model (see the `SwinTransformer` model for an example).
-
-## Training a New Model (Pre-trained model from PyTorch is recommended)
-
-Follow these steps:
-
-1. **Select a pre-trained model** from [PyTorch](https://pytorch.org/vision/stable/models.html#classification) or create your own.
-
-2. **Create a folder for the model** in the `models` directory.
-
-3. **Inside the new folder, create three files**:
-
-   - `config.yml`
-   - `main.py`
-   - `README.md` (to clarify what the model does)
-
-4. **Optional**: Create a custom function to freeze some layers based on the model.
-
-5. **Define the proper components**:
-
-   - Loss function
-   - Optimizer
-   - Scheduler
-
-6. **Specify the run parameters** in the `config.yml` file as preferred:
-
-   - In the `data` section, choose to download a dataset not available directly from `torchvision`.
-   - Set `wandb` parameter to `False` to avoid tracking results on the wandb personal profile.
 
 
 --- 
