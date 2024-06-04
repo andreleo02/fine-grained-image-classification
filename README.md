@@ -64,8 +64,38 @@ If something is missing in this guide, please feel free to open an issue on this
 To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on four very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
 
 - **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
+  <br>
+
+<p align="center">
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/7cc62f96cf4fd7e4a9c9739abd99227fb38c140c/CUB-200-2011-0000000109-6e01ce73_vMleyYb.jpeg" width="512"/>  
+</p>
+
+<p align="center">
+  <sub><em>CUB-200-2011 is an extended version of CUB-200. The extended version roughly doubles the number of images per category and adds new part localization annotations. All images are annotated with bounding boxes, part locations, and at- tribute labels. Images and annotations were filtered by multiple users of Mechanical Turk.</em></sub>
+</p>
+
 - **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)**
+<br>
+
+<p align="center">
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/d48b5728ed9e2bbc55d0092f96d69c0ceade84eb/Image-examples-from-Flowers102-dataset.jpg?raw=true" width="512"/>  
+</p>
+
+<p align="center">
+  <sub><em>Flowers 102 dataset: The images have large scale, pose and light variations. In addition, there are categories that have large variations within the category and several very similar categories.</em></sub>
+</p>
+  
 - **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
+<br>
+
+<p align="center">
+  <img src="https://github.com/andreleo02/deep-dream-team/blob/49d700167aef624473f743a45e6aee2f117570c3/FGVC-Aircraft-0000003405-c35d29b7.jpg?raw=true" width="512"/>  
+</p>
+
+<p align="center">
+  <sub><em>FGVC-Aircraft dataset: Aircraft, and in particular airplanes, are alternative to objects typically considered for fine-grained categorization such as birds and pets.</em></sub>
+</p>
+
 - **[Mammalia]()** 
 <p>
   <sub><em> Note: Mammalia dataset is not publicly available but was used in the context of the competition of the Introduction to Machine Learning Course and provided by the University of Trento. This dataset contains 100 different classes of mammals. For more detailed information please consult our paper. </em></sub>
