@@ -14,25 +14,6 @@ This project aims to conduct an exploratory analysis of fine-grained image class
   <sub><em>Example of fine grained image classification on flowers: object present smaller differences between them and hace a high degree of similarity.</em></sub>
 </p>
 
-## Models
-
-To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks and two belonging to the family of transformers, for comparative purposes:
-
-- **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/EfficientNetV2)**
-- **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ResNEt34)**
-- **[SwinTransformer](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/SwinTransformer)**
-- **[ViT-16](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ViT-16)**
-
-If something is missing in this guide, please feel free to open an issue on this repo.
-
-## Experiments
-
-To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on four very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
-
-- **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
-- **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)**
-- **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
-
 ## Project structure
 
 ```
@@ -66,6 +47,26 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 │  └─ utils.py
 
 ```
+
+## Models
+
+To conduct our experiments on fine-grained image classification, we have selected four models, two belonging to the family of convolutional neural networks and two belonging to the family of transformers, for comparative purposes:
+
+- **[EfficientNetV2](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/EfficientNetV2)**
+- **[ResNEt34](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ResNEt34)**
+- **[SwinTransformer](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/SwinTransformer)**
+- **[ViT-16](https://github.com/andreleo02/deep-dream-team/tree/9027f3385f4c53f2c438b2e9372e96980558f2dc/src/models/ViT-16)**
+
+If something is missing in this guide, please feel free to open an issue on this repo.
+
+## Experiments
+
+To conduct this analysis on fine-grained visual classification, we evaluated the performance of our models on four very popular datasets in the field of computer vision, specifically chosen for fine-grained tasks like the present one.
+
+- **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
+- **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)**
+- **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
+
 
 ## Results 
 During our experiments EfficientNet consistently demonstrated the best performance in terms of accuracy and loss across the different datasets. However, SwinT also showed promising results, indicating the potential of transformers for image classification. Both of these models demonstrate an optimal balance between complexity and efficiency. SwinT also exhibited the best performance in comparison to ViT16. By contrast, ResNet, despite being a deep and effective architecture, lead to poorer results compared to EfficientNet.
