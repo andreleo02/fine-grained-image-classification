@@ -167,6 +167,17 @@ During our experiments we trained and validated each ***model*** on each ***data
    Feel free to play with the parameters in the `config.yml` and have fun!
 
 ---
+## How to use different models
+
+Follow these steps:
+
+1. Select one of the pre-trained models present in [pytorch](https://pytorch.org/vision/stable/models.html#classification).
+2. Create a folder for the model in the `models` folder.
+3. Inside the new folder, create three files: `config.yml`, `main.py` and `README.md` (to clarify what the model does).
+4. Call the main function with the required parameters (there is an example in the `SwinTransformer` folder).
+5. Specify the run paramenters in the `config.yml` file.
+
+---
 
 ## How to use different datasets
 
