@@ -138,6 +138,17 @@ During our experiments we trained and validated each ***model*** on each ***data
 </tr>
 </table>
 
+<table border="0">
+<tr>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/2f2fca989d367b320de202e1dc2792c4ef2e3b20/accuracy%20flowers.jpg" width="100%" />
+    </td>
+    <td>
+    <img src="https://github.com/andreleo02/deep-dream-team/blob/2f2fca989d367b320de202e1dc2792c4ef2e3b20/accuracy%20mammalia.jpg", width="100%" />
+    </td>
+</tr>
+</table>
+
  More details about the results of our experiments (including information about the training phase) for each model can be found in our [paper](https://github.com/andreleo02/deep-dream-team/blob/8e4b56d933e07fccc3834fa6e1ea1f2b7000dcdf/PAPER.pdf).
 
 <p>
