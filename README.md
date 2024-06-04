@@ -66,8 +66,7 @@ To conduct this analysis on fine-grained visual classification, we evaluated the
 - **[CUB 200 2011](https://www.vision.caltech.edu/datasets/cub_200_2011/)**
 - **[Oxford Flowers 102](https://pytorch.org/vision/0.17/generated/torchvision.datasets.Flowers102.html)**
 - **[FGVC Aircraft](https://pytorch.org/vision/0.17/generated/torchvision.datasets.FGVCAircraft.html)**
-- **MAMMALIA** 
-<br>
+- **[MAMMALIA]()** 
 <p>
   <sub><em> Note: Mammalia dataset is not publicly available but was used in the context of a competition and provided by the University of Trento.</em></sub>
 </p>
