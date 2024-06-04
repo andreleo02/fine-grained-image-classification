@@ -96,7 +96,9 @@ During our experiments EfficientNet consistently demonstrated the best performan
 | ViT16 | 0.13 | 0.46 | 2.23 | 1.70 | 
 | Swin-T | 0.24 | 0.21 | 1.12 | 1.98 | 
 
-Note: More about the results including the validation losse over epochs for each model can be found in our [paper]().
+<p>
+  <sub><em> More about the results including the validation losse over epochs for each model can be found in our [paper]().</em></sub>
+</p>
 
   
 ## Repository guide
