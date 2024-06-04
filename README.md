@@ -73,12 +73,13 @@ During our experiments EfficientNet consistently demonstrated the best performan
 
 **Validation accuracy of our mdoels over different datasets**
 
-| Model | CUB | Flowers | Aircrafts |  
-| :---: | :---: | :---: | :---: | 
-| ResNet34 | 97.77 | 94.22 | 66.69 | 
-| EfficientNetV2 | 99.91 | 95.80 | 76.49 | 
-| ViT16 | 98.36 | 88.01 | 44.99 |
-| Swin-T | 98.18 | 94.12 | 71.39 | 
+| Model | CUB | Flowers | Aircrafts | Mammalia|
+| :---: | :---: | :---: | :---: | :---: | 
+| ResNet34 | 97.77 | 94.22 | 66.69 | 50.58 | 
+| EfficientNetV2 | 99.91 | 95.80 | 76.49 | 66.11 | 
+| ViT16 | 98.36 | 88.01 | 44.99 | 59.96 | 
+| Swin-T | 98.18 | 94.12 | 71.39 | 66.50 | 
+
 
 Note: <sup>*</sup> indicates multi-scale testing.
 
